@@ -313,14 +313,6 @@ if(metaSMT_ENABLE_TESTS)
   add_subdirectory(tests)
 endif()
 
-if(metaSMT_ENABLE_BINDINGS)
-  add_subdirectory(bindings)
-endif()
-
-if(metaSMT_ENABLE_TOOLBOX)
-  add_subdirectory(toolbox)
-endif()
-
 ############################################################
 ########## generate cmake config files #####################
 ############################################################
