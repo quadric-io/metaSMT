@@ -4,7 +4,6 @@
 #include <metaSMT/backend/Z3.hpp>
 #include <metaSMT/API/Stack.hpp>
 #include <metaSMT/API/Comment.hpp>
-#include <metaSMT/API/Group.hpp>
 #include <metaSMT/Instantiate.hpp>
 
 using namespace metaSMT::solver;

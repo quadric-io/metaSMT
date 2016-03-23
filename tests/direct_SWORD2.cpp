@@ -1,6 +1,5 @@
 #define BOOST_TEST_MODULE direct_SWORD
 #include <metaSMT/DirectSolver_Context.hpp>
-#include <metaSMT/API/Group.hpp>
 #include <metaSMT/API/Stack.hpp>
 #include <metaSMT/backend/SWORD_Backend.hpp>
 

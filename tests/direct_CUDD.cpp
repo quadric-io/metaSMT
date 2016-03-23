@@ -1,7 +1,6 @@
 #define BOOST_TEST_MODULE direct_CUDD
 #include <metaSMT/DirectSolver_Context.hpp>
 #include <metaSMT/backend/CUDD_Context.hpp>
-#include <metaSMT/API/Group.hpp>
 
 using namespace metaSMT::solver;
 using namespace metaSMT;

@@ -3,7 +3,6 @@
 #include <metaSMT/DirectSolver_Context.hpp>
 #include <metaSMT/backend/SAT_Clause.hpp>
 #include <metaSMT/backend/MiniSAT.hpp>
-#include <metaSMT/API/Group.hpp>
 #include <metaSMT/API/Stack.hpp>
 #include <metaSMT/BitBlast.hpp>
 

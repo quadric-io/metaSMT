@@ -5,7 +5,6 @@
 #include <metaSMT/backend/SWORD_Backend.hpp>
 #include <metaSMT/API/Stack.hpp>
 #include <metaSMT/API/Comment.hpp>
-#include <metaSMT/API/Group.hpp>
 
 using namespace metaSMT::solver;
 using namespace metaSMT;

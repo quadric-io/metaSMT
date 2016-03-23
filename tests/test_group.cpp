@@ -1,11 +1,8 @@
-
-
 #include <boost/proto/debug.hpp>
 #include <boost/test/unit_test.hpp>
 #include <string>
 
 #include <metaSMT/frontend/Logic.hpp>
-#include <metaSMT/API/Group.hpp>
 
 using namespace std;
 using namespace metaSMT;

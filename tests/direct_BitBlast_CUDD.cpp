@@ -1,7 +1,6 @@
 #define BOOST_TEST_MODULE direct_BitBlast_CUDD
 #include <metaSMT/DirectSolver_Context.hpp>
 #include <metaSMT/backend/CUDD_Context.hpp>
-#include <metaSMT/API/Group.hpp>
 #include <metaSMT/BitBlast.hpp>
 
 using namespace metaSMT::solver;

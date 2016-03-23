@@ -4,7 +4,6 @@
 #include <metaSMT/API/Stack.hpp>
 #include <metaSMT/API/Comment.hpp>
 #include <metaSMT/API/SymbolTable.hpp>
-#include <metaSMT/API/Group.hpp>
 #include <metaSMT/API/AssignRandomBits.hpp>
 #include <metaSMT/Instantiate.hpp>
 

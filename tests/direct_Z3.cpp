@@ -3,7 +3,6 @@
 #include <metaSMT/backend/Z3_Backend.hpp>
 #include <metaSMT/API/Comment.hpp>
 #include <metaSMT/API/SymbolTable.hpp>
-#include <metaSMT/API/Group.hpp>
 
 using namespace metaSMT::solver;
 using namespace metaSMT;

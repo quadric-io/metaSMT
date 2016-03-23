@@ -3,7 +3,6 @@
 #include <metaSMT/DirectSolver_Context.hpp>
 #include <metaSMT/backend/SAT_Aiger.hpp>
 #include <metaSMT/backend/MiniSAT.hpp>
-#include <metaSMT/API/Group.hpp>
 #include <metaSMT/BitBlast.hpp>
 
 using namespace metaSMT::solver;
