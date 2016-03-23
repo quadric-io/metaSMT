@@ -20,13 +20,17 @@ namespace metaSMT {
    * return value wrapper
    *
    */ 
+  
   class result_wrapper {
+
+    typedef boost::optional< boost::function0<bool> > Rng;
 
     // converter types
     struct as_vector_tribool 
     {
       typedef std::vector<boost::logic::tribool > result_type;
 
+      
       result_type operator() ( result_type const & v ) const {
         return v;
       }
@@ -75,7 +79,7 @@ namespace metaSMT {
       }
 
     };
-
+    
     struct as_tribool 
     {
       typedef boost::logic::tribool result_type;
@@ -170,7 +174,7 @@ namespace metaSMT {
         return ret;
       }
     };
-
+    
     struct as_string
     {
       typedef std::string result_type; 
@@ -222,7 +226,7 @@ namespace metaSMT {
       }
 
     };
-
+    
     template<typename Integer>
     struct as_integer {
 
@@ -312,7 +316,7 @@ namespace metaSMT {
       }
       Rng _rng;
     };
-
+    
     struct check_if_X
     {
       typedef bool result_type; 
@@ -373,39 +377,8 @@ namespace metaSMT {
       : r( boost::dynamic_bitset<>(width, value) )
       { }
 
-      operator std::vector<bool> () const {
-        return boost::apply_visitor(as_vector_bool(), r);
-      }
-
-      operator std::vector<boost::logic::tribool> () const {
-        return boost::apply_visitor(as_vector_tribool(), r);
-      }
-
       operator std::string () const {
         return boost::apply_visitor(as_string(), r);
-      }
-
-      operator boost::dynamic_bitset<> () const {
-        std::vector<boost::logic::tribool> val = *this;
-        boost::dynamic_bitset<> ret(val.size());
-        for (unsigned i = 0; i < val.size(); ++i) {
-          ret[i]=val[i];
-        }
-        return ret;
-      }
-
-      result_wrapper & throw_if_X() {
-        if ( boost::apply_visitor( check_if_X(), r) ) {
-          throw std::string("contains X");
-        }
-        return *this;
-      }
-
-      typedef boost::optional< boost::function0<bool> > Rng;
-
-      result_wrapper & randX( Rng rng = Rng() ) {
-        _rng=rng;
-        return *this;
       }
 
       template< typename Integer> 
@@ -413,16 +386,9 @@ namespace metaSMT {
         //BOOST_CONCEPT_ASSERT(( boost::Integer<Integer> ));
         return boost::apply_visitor(as_integer<Integer>(_rng), r);
       } 
-
+      
       operator boost::logic::tribool () const {
         return boost::apply_visitor(as_tribool(), r);
-      }
-
-      friend std::ostream &
-      operator<< (std::ostream & out, result_wrapper const & rw) {
-        std::string o = rw;
-        out << o ;
-        return out;
       }
 
 
