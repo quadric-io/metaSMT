@@ -18,13 +18,68 @@
 namespace metaSMT {
   /** 
    * return value wrapper
+   *
    */ 
   
   class result_wrapper {
 
     typedef boost::optional< boost::function0<bool> > Rng;
 
-    // converter types    
+    // converter types
+    struct as_vector_tribool 
+    {
+      typedef std::vector<boost::logic::tribool > result_type;
+
+      
+      result_type operator() ( result_type const & v ) const {
+        return v;
+      }
+      result_type operator() ( boost::logic::tribool const & t ) const {
+        result_type ret (1, t);
+        return ret;
+      }
+
+      result_type operator() (bool b ) const {
+        result_type ret (1);
+        ret[0]=b;
+        return ret;
+      }
+
+      result_type operator() ( std::vector<bool> const & vb) const {
+        result_type ret (vb.size());
+        for (unsigned i = 0; i < vb.size(); ++i) {
+          ret[i] = vb[i];
+        }
+        return ret;
+      }
+
+      result_type operator() ( std::string const & s ) const {
+        unsigned size = s.size();
+        result_type ret(size);
+        for (unsigned i = 0; i < size; ++i) {
+          switch(s[size-i-1]){
+            case '0': 
+              ret[i] = false; break;
+            case '1': 
+              ret[i] = true; break;
+            default:
+              ret[i] = boost::logic::indeterminate;
+          }
+        }
+        return ret;
+      }
+
+      template<typename T, typename T2>
+      result_type operator() ( boost::dynamic_bitset<T, T2> const & t ) const {
+        result_type ret (t.size());
+        for (unsigned i = 0; i < t.size(); ++i) {
+          ret[i] = t[i];
+        }
+        return ret;
+      }
+
+    };
+    
     struct as_tribool 
     {
       typedef boost::logic::tribool result_type;
@@ -71,6 +126,50 @@ namespace metaSMT {
           default:
             ret = boost::logic::indeterminate;
           }
+        }
+        return ret;
+      }
+    };
+
+
+    struct as_vector_bool
+    {
+      typedef  std::vector<bool> result_type;
+
+      result_type operator() ( result_type const & v ) const
+      { return v; }
+
+      result_type operator() ( boost::logic::tribool t) {
+        result_type ret(1);
+        ret[0] = t;
+        return ret;
+      }
+
+      result_type operator() ( bool b ) const {
+        result_type ret(1);
+        ret[0] = b;
+        return ret;
+      }
+
+      result_type operator() ( std::vector< boost::logic::tribool > vt ) const {
+        result_type ret(vt.size());
+        for (unsigned i = 0; i < vt.size(); ++i)
+         ret[i] = vt[i];
+        return ret;
+      }
+
+      result_type operator() ( std::string s) const {
+        result_type ret(s.size());
+        for (unsigned i = 0; i < s.size(); ++i)
+         ret[i] = (s[s.size() - i -1] == '1');
+        return ret;
+      }
+
+      template<typename T, typename T2>
+      result_type operator() ( boost::dynamic_bitset<T, T2> const & t ) const {
+        result_type ret (t.size());
+        for (unsigned i = 0; i < t.size(); ++i) {
+          ret[i] = t[i];
         }
         return ret;
       }
@@ -216,6 +315,38 @@ namespace metaSMT {
         return (*_rng)();
       }
       Rng _rng;
+    };
+    
+    struct check_if_X
+    {
+      typedef bool result_type; 
+
+      template<typename T>
+      result_type operator() ( T const & v ) const {
+        return false;
+      }
+
+      result_type operator() ( boost::logic::tribool val ) const {
+        return boost::logic::indeterminate(val);
+      }
+        
+      result_type operator() ( std::vector< boost::logic::tribool > val ) const {
+        unsigned size = val.size();
+        for (unsigned i = 0; i < size; ++i) {
+          if( boost::logic::indeterminate(val[i]) )
+            return true;
+        }
+        return false;
+      }
+
+      result_type operator() ( std::string val ) const {
+        unsigned size = val.size();
+        for (unsigned i = 0; i < size; ++i) {
+          if( val[i] == 'x' || val[i] == 'X' )
+            return true;
+        }
+        return false;
+      }
     };
 
     public:
