@@ -55,17 +55,6 @@ add_test_executable( result_wrapper test_result_wrapper.cpp)
 
 add_test_executable( direct_SWORD direct_SWORD2.cpp REQUIRES SWORD_FOUND )
 
-find_library(PTHREAD pthread)
-
-add_test_executable( direct_Threaded_SWORD direct_Threaded_SWORD.cpp 
-  REQUIRES SWORD_FOUND Boost_THREAD_FOUND Boost_SYSTEM_FOUND
-  LIBRARIES ${Boost_THREAD_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${PTHREAD}
-)
-add_test_executable( direct_Priority_Boolector_CUDD direct_Priority_Boolector_CUDD.cpp 
-  REQUIRES Boolector_FOUND CUDD_FOUND Boost_THREAD_FOUND Boost_SYSTEM_FOUND
-  LIBRARIES ${Boost_THREAD_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${PTHREAD}
-)
-
 add_test_executable( direct_CUDD direct_CUDD.cpp REQUIRES CUDD_FOUND )
 add_test_executable( direct_BitBlast_CUDD direct_BitBlast_CUDD.cpp
   REQUIRES CUDD_FOUND)
