@@ -52,8 +52,6 @@ option(metaSMT_USE_ExprSolver "try to use expression solver" on)
 
 option(metaSMT_DOC_Doxygen    "try to build doxygen documentation" off)
 option(metaSMT_ENABLE_TESTS   "build tests (recommended)" on)
-option(metaSMT_ENABLE_BINDINGS "build bindings" on)
-option(metaSMT_ENABLE_TOOLBOX "build toolbox projects" on)
 
 set(metaSMT_CONFIG_DIR "share/metaSMT" CACHE PATH 
   "where to install CMake and Make Config files")
