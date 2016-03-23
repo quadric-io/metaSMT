@@ -6,7 +6,6 @@
 #include "../result_wrapper.hpp"
 
 #include <metaSMT/expression/expression.hpp>
-#include <metaSMT/expression/pretty_printing.hpp>
 
 namespace metaSMT {
   namespace solver {

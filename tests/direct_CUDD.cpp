@@ -5,13 +5,12 @@
 using namespace metaSMT::solver;
 using namespace metaSMT;
 struct Solver_Fixture {
-  typedef DirectSolver_Context< Group < CUDD_Context > > ContextType;
+  typedef DirectSolver_Context< CUDD_Context > ContextType;
   ContextType ctx ;
 };
 
 #include "test_solver.cpp"
 // #include "test_QF_BV.cpp"
 // #include "test_Array.cpp"
-#include "test_group.cpp"
 #include "test_unsat.cpp"
 #include "test_lazy.cpp"

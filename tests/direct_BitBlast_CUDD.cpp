@@ -6,7 +6,7 @@
 using namespace metaSMT::solver;
 using namespace metaSMT;
 struct Solver_Fixture {
-  typedef DirectSolver_Context< Group < BitBlast<CUDD_Context > > > 
+  typedef DirectSolver_Context< BitBlast<CUDD_Context > > 
     ContextType;
   ContextType ctx ;
 };
@@ -14,7 +14,6 @@ struct Solver_Fixture {
 #include "test_solver.cpp"
 #include "test_QF_BV.cpp"
 // #include "test_Array.cpp"
-#include "test_group.cpp"
 #include "test_unsat.cpp"
 #include "test_lazy.cpp"
 

@@ -7,7 +7,6 @@
 #include <metaSMT/frontend/Logic.hpp>
 #include <metaSMT/API/Assumption.hpp>
 
-using namespace std;
 using namespace metaSMT;
 using namespace metaSMT::solver;
 using namespace metaSMT::logic;

@@ -6,7 +6,6 @@
 #include <string>
 #include <limits>
 
-using namespace std;
 using namespace metaSMT;
 using boost::dynamic_bitset;
 using boost::logic::tribool;

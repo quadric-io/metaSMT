@@ -9,7 +9,6 @@
 
 #include <metaSMT/expression/expression.hpp>
 
-using namespace std;
 using namespace metaSMT;
 using namespace metaSMT::solver;
 using namespace metaSMT::logic;

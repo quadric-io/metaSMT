@@ -4,7 +4,6 @@
 #include <boost/dynamic_bitset.hpp>
 #include <string>
 
-using namespace std;
 using namespace metaSMT;
 using namespace metaSMT::logic;
 using namespace metaSMT::logic::QF_UF;

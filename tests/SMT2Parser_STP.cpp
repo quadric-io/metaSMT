@@ -5,7 +5,6 @@
 #include <metaSMT/API/Options.hpp>
 #include <metaSMT/backend/SMT2.hpp>
 
-using namespace std;
 using namespace metaSMT;
 using namespace metaSMT::solver;
 struct Solver_Fixture {
