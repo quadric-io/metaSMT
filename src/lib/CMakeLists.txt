@@ -1,6 +1,5 @@
 add_library(metaSMT STATIC
   _var_id.cpp
-  expression_generator.cpp
   simple_symbol_table.cpp
 )
 target_link_libraries(metaSMT ${metaSMT_LIBS})
