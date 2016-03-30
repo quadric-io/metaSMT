@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../tags/QF_BV.hpp"
+#include "../tags/Array.hpp"
 #include "../result_wrapper.hpp"
 
 extern "C" {
@@ -16,6 +17,7 @@ namespace metaSMT {
   namespace solver {
     namespace predtags = ::metaSMT::logic::tag;
     namespace bvtags = ::metaSMT::logic::QF_BV::tag;
+    namespace arraytags = ::metaSMT::logic::Array::tag;
 
     /**
      * @ingroup Backend
@@ -34,7 +36,9 @@ namespace metaSMT {
 
       STP()
         : vc( vc_createValidityChecker() )
-      {}
+      {
+        make_division_total( vc );
+      }
 
       ~STP() {
         for( Exprs::iterator it = exprs.begin(), ie = exprs.end();
@@ -312,12 +316,19 @@ namespace metaSMT {
         return ptr(vc_boolToBVExpr(vc, comp));
       }
 
-      result_type operator()( bvtags::bvshl_tag, result_type a, result_type b ) {
-        return ptr(vc_bvVar32LeftShiftExpr(vc, b, a));
+      result_type operator()( bvtags::bvshl_tag, const result_type& a, const result_type& b ) {
+        const int w = getBVLength(a);
+        return ptr(vc_bvLeftShiftExprExpr(vc, w, a, b));
       }
 
-      result_type operator()( bvtags::bvshr_tag, result_type a, result_type b ) {
-        return ptr(vc_bvVar32RightShiftExpr(vc, b, a));
+      result_type operator()( bvtags::bvshr_tag, const result_type& a, const result_type& b ) {
+        const int w = getBVLength(a);
+        return ptr(vc_bvRightShiftExprExpr(vc, w, a, b));
+      }
+
+      result_type operator()( bvtags::bvashr_tag, const result_type& a, const result_type& b ) {
+        const int w = getBVLength(a);
+        return ptr(vc_bvSignedRightShiftExprExpr(vc, w, a, b));
       }
 
       result_type operator()( bvtags::extract_tag const &
@@ -363,6 +374,40 @@ namespace metaSMT {
                              , result_type b) {
         return ptr(vc_notExpr(vc, operator()(predtags::equal_tag(), a, b)));
       }
+      
+    
+      result_type operator() (arraytags::array_var_tag const & var
+                              , boost::any args )
+      {
+        if (var.id == 0 ) {
+          throw std::runtime_error("uninitialized array used");
+        }
+       
+        Type index_sort = vc_bvType(vc, var.index_width);
+        Type elem_sort = vc_bvType(vc, var.elem_width);
+        Type ty = vc_arrayType(vc, index_sort, elem_sort);
+
+        char buf[64];
+        sprintf(buf, "var_%u", var.id);
+	
+        return(ptr(vc_varExpr(vc, buf, ty)));	
+
+      }
+
+      
+      result_type operator() (arraytags::select_tag const &
+                              , result_type array
+                              , result_type index) {
+        return ptr(vc_readExpr(vc, array, index));
+      }
+
+      result_type operator() (arraytags::store_tag const &
+                              , result_type array
+                              , result_type index
+                              , result_type value) {
+        return ptr(vc_writeExpr(vc, array, index, value));
+      }
+      
 
       result_type operator()( predtags::distinct_tag const &
                              , result_type a
@@ -437,7 +482,7 @@ namespace metaSMT {
         , mpl::pair<bvtags::bvudiv_tag,    VC_SIZE_F2<&vc_bvDivExpr> >
         , mpl::pair<bvtags::bvurem_tag,    VC_SIZE_F2<&vc_bvModExpr> >
         , mpl::pair<bvtags::bvsdiv_tag,    VC_SIZE_F2<&vc_sbvDivExpr> >
-        , mpl::pair<bvtags::bvsrem_tag,    VC_SIZE_F2<&vc_sbvModExpr> >
+        , mpl::pair<bvtags::bvsrem_tag,    VC_SIZE_F2<&vc_sbvRemExpr> >
         , mpl::pair<bvtags::bvslt_tag,     VC_F2<&vc_sbvLtExpr> >
         , mpl::pair<bvtags::bvsle_tag,     VC_F2<&vc_sbvLeExpr> >
         , mpl::pair<bvtags::bvsgt_tag,     VC_F2<&vc_sbvGtExpr> >
@@ -447,7 +492,6 @@ namespace metaSMT {
         , mpl::pair<bvtags::bvugt_tag,     VC_F2<&vc_bvGtExpr> >
         , mpl::pair<bvtags::bvuge_tag,     VC_F2<&vc_bvGeExpr> >
         , mpl::pair<bvtags::concat_tag,    VC_F2<&vc_bvConcatExpr> >
-        // , mpl::pair<bvtags::bvashr_tag,    VC_F2<&boolector_sra > >
         > Opcode_Map;
 
         typedef

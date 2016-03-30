@@ -9,11 +9,15 @@ REQUIRES="
   $BOOST
 "
 
+ACADEMIC="
+  lingeling-ayv-86bf266-140429
+  boolector-2.2.0
+"
+
 FREE="
   cryptominisat-git
   cvc4-1.4
   picosat-936
-  boolector-1.5.118
   aiger-20071012
   cudd-2.4.2
   minisat-git
@@ -24,6 +28,12 @@ FREE="
 NONFREE="
   SWORD-1.1
   lingeling-ayv-86bf266-140429
+"
+
+TRAVIS="
+  lingeling-ayv-86bf266-140429
+  boolector-2.2.0
+  cudd-2.4.2
 "
 
 CMAKE=cmake
@@ -41,8 +51,10 @@ usage() {
 $0 sets up a metaSMT build directory.
 usage: $0 [--free] [--non-free] build
   --help          show this help
-  --free          include free backends (Aiger, Boolector, CUDD, PicoSat)
-  --non-free      include non-free backends (SWORD, Z3)
+  --academic      include academic license backends (Boolector, Lingeling)
+  --free          include free backends (Aiger, CUDD, CVC4, PicoSat, Z3, ...)
+  --non-free      include non-free backends (SWORD, Lingeling)
+  --travis        include selected backends for testing with Travis CI
   --clean         delete build directory before creating a new one
   --deps <dir>    build dependencies in this directory
    -d <dir>       can be shared in different projects
@@ -71,8 +83,10 @@ fi
 while [[ "$@" ]]; do
   case $1 in
     --help|-h)    usage;;
+    --academi*)   REQUIRES="$REQUIRES $ACADEMIC" ;;
     --free)       REQUIRES="$REQUIRES $FREE" ;;
     --non-free)   REQUIRES="$REQUIRES $NONFREE" ;;
+    --travis)     REQUIRES="$REQUIRES $TRAVIS" ;;
     --deps|-d)    DEPS="$2"; shift;;
     --install|-i) INSTALL="$2"; shift;;
     --mode|-m)    CMAKE_ARGS="$CMAKE_ARGS -DCMAKE_BUILD_TYPE=$2"; shift;;
