@@ -64,26 +64,6 @@ add_test_executable(direct_CUDD_Distributed direct_CUDD_Distributed.cpp
 add_test_executable( direct_Boolector direct_Boolector.cpp
   REQUIRES Boolector_FOUND )
 
-add_test_executable( SMT2Parser_Boolector SMT2Parser_Boolector.cpp
-  REQUIRES Z3_FOUND Boolector_FOUND
-  LIBRARIES ${Boost_IOSTREAMS_LIBRARY} 
-  )
-
-add_test_executable( SMT2Parser_SMT2 SMT2Parser_SMT2.cpp
-  REQUIRES Z3_FOUND
-  LIBRARIES ${Boost_IOSTREAMS_LIBRARY} 
-  )
-
-add_test_executable( SMT2Parser_STP SMT2Parser_STP.cpp
-  REQUIRES Z3_FOUND STP_FOUND
-  LIBRARIES ${Boost_IOSTREAMS_LIBRARY} 
-  )
-
-add_test_executable( SMT2Parser_Z3_Backend SMT2Parser_Z3_Backend.cpp
-  REQUIRES Z3_FOUND
-  LIBRARIES ${Boost_IOSTREAMS_LIBRARY} 
-  )
-
 add_test_executable( direct_Z3 direct_Z3.cpp REQUIRES Z3_FOUND )
 
 add_test_executable( direct_STP direct_STP.cpp REQUIRES STP_FOUND )
@@ -110,46 +90,4 @@ add_test_executable( direct_Aiger_MiniSAT direct_Aiger_MiniSAT.cpp
 
 add_test_executable( direct_Aiger_PicoSAT direct_Aiger_PicoSAT.cpp
   REQUIRES PicoSAT_FOUND Aiger_FOUND )
-
-
-if(metaSMT_USE_SMT2)
-  find_program(Z3_EXECUTABLE z3)
-
-
-  if (Z3_EXECUTABLE)
-    execute_process(
-      COMMAND echo "(check-sat) "
-      COMMAND ${Z3_EXECUTABLE} -smt2 -in
-      OUTPUT_VARIABLE _Z3_OUTPUT
-      )
-    if( _Z3_OUTPUT STREQUAL "sat\n")
-      set( Z3_IS_INTERACTIVE 1)
-    else()
-      set( Z3_IS_INTERACTIVE 0)
-    endif()
-  endif()
-
-  add_test_executable( direct_SMT2 direct_SMT2.cpp
-    ARGS "--log_level=nothing"
-    REQUIRES Z3_EXECUTABLE Z3_IS_INTERACTIVE
-    LIBRARIES ${Boost_IOSTREAMS_LIBRARY}
-    ENVIRONMENT "Z3_EXECUTABLE=${Z3_EXECUTABLE}"
-  )
-
-endif(metaSMT_USE_SMT2)
-
-if(metaSMT_USE_ExprSolver)
-  add_test_executable( direct_ExprSolver_Boolector direct_ExprSolver_Boolector.cpp
-    REQUIRES Boolector_FOUND
-    LIBRARIES ${Boost_IOSTREAMS_LIBRARY})
-  add_test_executable( direct_ExprSolver_Z3 direct_ExprSolver_Z3.cpp
-    REQUIRES Z3_FOUND
-    LIBRARIES ${Boost_IOSTREAMS_LIBRARY})
-  add_test_executable( direct_ExprSolver_SMT2 direct_ExprSolver_SMT2.cpp
-    ARGS "--log_level=nothing"
-    REQUIRES Z3_EXECUTABLE Z3_IS_INTERACTIVE
-    LIBRARIES ${Boost_IOSTREAMS_LIBRARY}
-    ENVIRONMENT "Z3_EXECUTABLE=${Z3_EXECUTABLE}"
-  )
-endif(metaSMT_USE_ExprSolver)
 # vim: ts=2 sw=2 et
