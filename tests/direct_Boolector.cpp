@@ -5,8 +5,8 @@
 using namespace metaSMT::solver;
 using namespace metaSMT;
 struct Solver_Fixture {
-  typedef DirectSolver_Context < Boolector > ContextType;
-  ContextType ctx ;
+  typedef DirectSolver_Context<Boolector> ContextType;
+  ContextType ctx;
 };
 
 #include "test_solver.cpp"

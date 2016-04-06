@@ -4,16 +4,12 @@
 #include <metaSMT/support/contradiction_analysis.hpp>
 #include <metaSMT/frontend/Logic.hpp>
 
-#include <boost/assign/list_of.hpp>
 #include <boost/fusion/adapted/boost_tuple.hpp>
 #include <algorithm>
 
 using namespace metaSMT;
 using namespace metaSMT::solver;
 using namespace metaSMT::logic;
-namespace proto = boost::proto;
-using boost::dynamic_bitset;
-using boost::assign::list_of;
 using std::cout;
 using std::endl;
 
@@ -222,7 +218,7 @@ BOOST_AUTO_TEST_CASE( two_conflicts_1 )
   BOOST_REQUIRE_EQUAL(result[1].size(), 2);
   BOOST_REQUIRE_EQUAL(result[0][0], 1);
 
-  std::vector<unsigned> expected = list_of (2)(3);
+  std::vector<unsigned> expected = { 2, 3 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[1].begin(), result[1].end(), expected.begin(), expected.end());
 }
 
@@ -255,7 +251,7 @@ BOOST_AUTO_TEST_CASE( two_conflicts_1_vec )
   BOOST_REQUIRE_EQUAL(result[1].size(), 2);
   BOOST_REQUIRE_EQUAL(result[0][0], 1);
 
-  std::vector<unsigned> expected = list_of (2)(3).convert_to_container<std::vector<unsigned> >();
+  std::vector<unsigned> expected = { 2, 3 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[1].begin(), result[1].end(), expected.begin(), expected.end());
 }
 
@@ -276,10 +272,10 @@ BOOST_AUTO_TEST_CASE( two_conflicts_2 )
   BOOST_REQUIRE_EQUAL(result[1].size(), 2);
   std::vector<unsigned> expected;
 
-  expected= boost::assign::list_of (0)(2).convert_to_container<std::vector<unsigned> >();
+  expected = { 0, 2 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[0].begin(), result[0].end(), expected.begin(), expected.end());
 
-  expected= list_of (1)(3).convert_to_container<std::vector<unsigned> >();
+  expected = { 1, 3 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[1].begin(), result[1].end(), expected.begin(), expected.end());
 }
 
@@ -313,10 +309,10 @@ BOOST_AUTO_TEST_CASE( two_conflicts_2_vec )
   BOOST_REQUIRE_EQUAL(result[1].size(), 2);
   std::vector<unsigned> expected;
 
-  expected= list_of (0)(2).convert_to_container<std::vector<unsigned> >();
+  expected= { 0, 2 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[0].begin(), result[0].end(), expected.begin(), expected.end());
 
-  expected= list_of (1)(3).convert_to_container<std::vector<unsigned> >();
+  expected= { 1, 3 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[1].begin(), result[1].end(), expected.begin(), expected.end());
 }
 
@@ -336,7 +332,7 @@ BOOST_AUTO_TEST_CASE( two_conflicts_3 )
   BOOST_REQUIRE_EQUAL(result[1].size(), 2);
   BOOST_REQUIRE_EQUAL(result[0][0], 2);
 
-  std::vector<unsigned> expected = list_of (1)(3).convert_to_container<std::vector<unsigned> >();
+  std::vector<unsigned> expected = { 1, 3 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[1].begin(), result[1].end(), expected.begin(), expected.end());
 }
 
@@ -369,7 +365,7 @@ BOOST_AUTO_TEST_CASE( two_conflicts_3_vec )
   BOOST_REQUIRE_EQUAL(result[1].size(), 2);
   BOOST_REQUIRE_EQUAL(result[0][0], 2);
 
-  std::vector<unsigned> expected = list_of (1)(3).convert_to_container<std::vector<unsigned> >();
+  std::vector<unsigned> expected = { 1, 3 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[1].begin(), result[1].end(), expected.begin(), expected.end());
 }
 
@@ -390,10 +386,10 @@ BOOST_AUTO_TEST_CASE( double_conflict_1 )
 
 std::vector<unsigned> expected;
 
-  expected = list_of (1)(2).convert_to_container<std::vector<unsigned> >();
+  expected = { 1, 2 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[0].begin(), result[0].end(), expected.begin(), expected.end());
 
-  expected = list_of (2)(3).convert_to_container<std::vector<unsigned> >();
+  expected = { 2, 3 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[1].begin(), result[1].end(), expected.begin(), expected.end());
 }
 
@@ -427,10 +423,10 @@ BOOST_AUTO_TEST_CASE( double_conflict_1_vec )
 
 std::vector<unsigned> expected;
 
-  expected = list_of (1)(2).convert_to_container<std::vector<unsigned> >();
+  expected = { 1, 2 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[0].begin(), result[0].end(), expected.begin(), expected.end());
 
-  expected = list_of (2)(3).convert_to_container<std::vector<unsigned> >();
+  expected = { 2, 3 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[1].begin(), result[1].end(), expected.begin(), expected.end());
 }
 
@@ -465,16 +461,16 @@ BOOST_AUTO_TEST_CASE( double_conflicts_1)
 
   std::vector<unsigned> expected;
 
-  expected = list_of (2).convert_to_container<std::vector<unsigned> >();
+  expected = { 2 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[0].begin(), result[0].end(), expected.begin(), expected.end());
 
-  expected = list_of (4).convert_to_container<std::vector<unsigned> >();
+  expected = { 4 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[1].begin(), result[1].end(), expected.begin(), expected.end());
 
-  expected = list_of (1)(3).convert_to_container<std::vector<unsigned> >();
+  expected = { 1, 3 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[2].begin(), result[2].end(), expected.begin(), expected.end());
 
-  expected = list_of (5)(6).convert_to_container<std::vector<unsigned> >();
+  expected = { 5, 6 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[3].begin(), result[3].end(), expected.begin(), expected.end());
 }
 
@@ -512,16 +508,16 @@ BOOST_AUTO_TEST_CASE( double_conflicts_1_vec)
 
   std::vector<unsigned> expected;
 
-  expected = list_of (2).convert_to_container<std::vector<unsigned> >();
+  expected = { 2 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[0].begin(), result[0].end(), expected.begin(), expected.end());
  
-    expected = list_of (4).convert_to_container<std::vector<unsigned> >();
+  expected = { 4 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[1].begin(), result[1].end(), expected.begin(), expected.end());
 
-  expected = list_of (1)(3).convert_to_container<std::vector<unsigned> >();
+  expected = { 1, 3 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[2].begin(), result[2].end(), expected.begin(), expected.end());
  
-    expected = list_of (5)(6).convert_to_container<std::vector<unsigned> >();
+  expected = { 5, 6 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[3].begin(), result[3].end(), expected.begin(), expected.end());
 }
 
@@ -540,7 +536,7 @@ BOOST_AUTO_TEST_CASE( unsolve_conflict)
   BOOST_REQUIRE_EQUAL(result.size(), 1);
   std::vector<unsigned> expected;
 
-  expected = list_of (0)(1)(2).convert_to_container<std::vector<unsigned> >();
+  expected = { 0, 1, 2 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[0].begin(), result[0].end(), expected.begin(), expected.end());
 }
 
@@ -570,7 +566,7 @@ BOOST_AUTO_TEST_CASE( unsolve_conflict_vec)
   BOOST_REQUIRE_EQUAL(result.size(), 1);
   std::vector<unsigned> expected;
 
-  expected = list_of (0)(1)(2).convert_to_container<std::vector<unsigned> >();
+  expected = { 0, 1, 2 };
   BOOST_REQUIRE_EQUAL_COLLECTIONS( result[0].begin(), result[0].end(), expected.begin(), expected.end());
 }
 
