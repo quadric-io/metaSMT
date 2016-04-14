@@ -10,6 +10,5 @@ struct Solver_Fixture {
 };
 
 #include "test_solver.cpp"
-#include "test_Array.cpp"
 #include "test_unsat.cpp"
 #include "test_lazy.cpp"

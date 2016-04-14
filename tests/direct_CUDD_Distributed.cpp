@@ -37,9 +37,6 @@ struct Solver_Fixture {
 
 #include "test_solver.cpp"
 #include "test_QF_BV.cpp"
-// #include "test_Array.cpp"
-//#include "test_group.cpp"
-//#include "test_unsat.cpp"
 
 static const unsigned repeat = 10000;
 BOOST_FIXTURE_TEST_SUITE(dist, Solver_Fixture )
