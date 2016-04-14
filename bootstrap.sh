@@ -5,10 +5,6 @@ BUILD_DIR=$PWD/build
 
 BOOST=boost-1_55_0
 
-REQUIRES="
-  $BOOST
-"
-
 ACADEMIC="
   lingeling-ayv-86bf266-140429
   boolector-2.2.0
@@ -16,7 +12,7 @@ ACADEMIC="
 
 FREE="
   cryptominisat-git
-  cvc4-1.4
+  cvc4-unstable
   picosat-936
   aiger-20071012
   cudd-2.4.2
@@ -27,7 +23,6 @@ FREE="
 
 NONFREE="
   SWORD-1.1
-  lingeling-ayv-86bf266-140429
 "
 
 TRAVIS="
@@ -122,6 +117,10 @@ BUILD_DIR=$(mk_and_abs_dir $BUILD_DIR) &&
 INSTALL=$(mk_and_abs_dir ${INSTALL:-$BUILD_DIR/root}) &&
 DEPS=$(mk_and_abs_dir ${DEPS:-$BUILD_DIR}) &&
 
+if [ -z "$BOOST_ROOT" ]; then
+  REQUIRES="$BOOST $REQUIRES"
+  BOOST_ROOT="$DEPS/$BOOST"
+fi
 
 if ! cd dependencies; then 
     echo 'Missing "dependencies" directory. Please refer to the README.md for more details.'
@@ -158,9 +157,8 @@ eval_echo $CMAKE \
   -DCMAKE_INSTALL_PREFIX="$INSTALL" \
   -DCMAKE_PREFIX_PATH="$PREFIX_PATH" \
   $CMAKE_ARGS \
-  -DBOOST_ROOT="$DEPS/$BOOST" \
+  -DBOOST_ROOT="$BOOST_ROOT" \
   $SRC_DIR
-
 
 echo "finished bootstrap, you can now call make in $BUILD_DIR"
 
