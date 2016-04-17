@@ -34,7 +34,7 @@ namespace metaSMT {
           : std::runtime_error(what) {}
       };
 
-      static void _boolector_error(int ec) {
+      static void _boolector_error(int ) {
         throw BoolectorAssertion("internal error in boolector");
       }
 
@@ -79,16 +79,16 @@ namespace metaSMT {
           return result_wrapper(s);
         }
 
-        result_type operator() (predtags::var_tag const & var, boost::any args )
+        result_type operator() (predtags::var_tag const & , boost::any )
         {
           return ptr(boolector_var(_btor, 1, NULL));
         }
 
-        result_type operator() (predtags::false_tag , boost::any arg ) {
+        result_type operator() (predtags::false_tag , boost::any ) {
           return ptr(boolector_false(_btor));
         }
 
-        result_type operator() (predtags::true_tag , boost::any arg ) {
+        result_type operator() (predtags::true_tag , boost::any ) {
           return ptr(boolector_true(_btor));
         }
 
@@ -96,16 +96,16 @@ namespace metaSMT {
           return ptr(boolector_not(_btor, a) );
         }
 
-        result_type operator() (bvtags::var_tag const & var, boost::any args ) {
+        result_type operator() (bvtags::var_tag const & var, boost::any ) {
           assert ( var.width != 0 );
           return ptr(boolector_var(_btor, var.width, NULL));
         }
 
-        result_type operator() (bvtags::bit0_tag , boost::any arg ) {
+        result_type operator() (bvtags::bit0_tag , boost::any ) {
           return ptr(boolector_false(_btor));
         }
 
-        result_type operator() (bvtags::bit1_tag , boost::any arg ) {
+        result_type operator() (bvtags::bit1_tag , boost::any ) {
           return ptr(boolector_true(_btor));
         }
 
@@ -249,7 +249,7 @@ namespace metaSMT {
         }
 
         result_type operator() (arraytags::array_var_tag const & var
-                                , boost::any args )
+                                , boost::any )
         {
           return ptr(boolector_array(_btor, var.elem_width, var.index_width, NULL));
         }
@@ -267,7 +267,7 @@ namespace metaSMT {
           return ptr(boolector_write(_btor, array, index, value));
         }
 
-        result_type operator() (predtags::ite_tag tag, result_type a, result_type b, result_type c) {
+        result_type operator() (predtags::ite_tag , result_type a, result_type b, result_type c) {
           return ptr(boolector_cond(_btor, a, b, c));
         }
 
@@ -385,7 +385,7 @@ namespace metaSMT {
 
 
         /* pseudo command */
-        void command ( Boolector const & ) { };
+        void command ( Boolector const & ) { }
 
       protected:
         Btor *_btor;

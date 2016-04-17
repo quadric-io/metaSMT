@@ -65,7 +65,7 @@ namespace metaSMT {
           : ctx(ctx)
         {}
 
-        Z3_sort operator() (type::Boolean const &arg) const {
+        Z3_sort operator() (type::Boolean const & ) const {
           return Z3_mk_bool_sort(ctx);
         }
 
@@ -204,13 +204,13 @@ namespace metaSMT {
         return (result == z3::sat);
       }
 
-      result_type operator() (predtags::var_tag const & var, boost::any args) {
+      result_type operator() (predtags::var_tag const & var, boost::any ) {
         char buf[64];
         sprintf(buf, "var_%u", var.id);
         return ctx_.bool_const(buf);
       }
 
-      result_type operator() (bvtags::var_tag const & var, boost::any args) {
+      result_type operator() (bvtags::var_tag const & var, boost::any ) {
         char buf[64];
         sprintf(buf, "var_%u", var.id);
         return ctx_.bv_const(buf, var.width);
@@ -234,7 +234,7 @@ namespace metaSMT {
       }
 
         result_type operator() (uftags::function_var_tag const & var,
-                                boost::any args) {
+                                boost::any ) {
         unsigned const num_args = var.args.size();
 
         // construct the name of the uninterpreted_function
@@ -293,11 +293,11 @@ namespace metaSMT {
           Z3_mk_app(ctx_, z3::func_decl(func_decl), 3, arg_array));
       }
 
-      result_type operator() (predtags::false_tag const &, boost::any arg) {
+      result_type operator() (predtags::false_tag const &, boost::any ) {
         return ctx_.bool_val(false);
       }
 
-      result_type operator() (predtags::true_tag const &, boost::any arg) {
+      result_type operator() (predtags::true_tag const &, boost::any ) {
         return ctx_.bool_val(true);
       }
 
@@ -331,11 +331,11 @@ namespace metaSMT {
           Z3_mk_ite(ctx_, z3::expr(a), z3::expr(b), z3::expr(c)));
       }
 
-      result_type operator() (bvtags::bit0_tag , boost::any arg) {
+      result_type operator() (bvtags::bit0_tag , boost::any ) {
         return ctx_.bv_val(0, 1);
       }
 
-      result_type operator() (bvtags::bit1_tag , boost::any arg) {
+      result_type operator() (bvtags::bit1_tag , boost::any ) {
         return ctx_.bv_val(1, 1);
       }
 

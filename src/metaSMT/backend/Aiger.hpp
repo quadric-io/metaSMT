@@ -25,17 +25,17 @@ namespace metaSMT
         aiger_reset ( aig ); 
       }
 
-      result_type operator() (logic::tag::var_tag const& var, boost::any args)
+      result_type operator() (logic::tag::var_tag const& , boost::any )
       {
         return new_var(); 
       }
 
-      result_type operator() (logic::tag::true_tag const& , boost::any args)
+      result_type operator() (logic::tag::true_tag const& , boost::any )
       {
         return aiger_true;
       }
        
-      result_type operator() (logic::tag::false_tag const& , boost::any args)
+      result_type operator() (logic::tag::false_tag const& , boost::any )
       {
         return aiger_false; 
       }

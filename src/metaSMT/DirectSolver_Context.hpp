@@ -315,7 +315,7 @@ namespace metaSMT {
       SolverContext::assumption(e);
     }
 
-    void command( set_option_cmd const &tag, std::string const &key, std::string const &value ) {
+    void command( set_option_cmd const & , std::string const &key, std::string const &value ) {
       opt.set(key, value);
       typedef typename boost::mpl::if_<
         /* if   = */ typename features::supports< SolverContext, set_option_cmd >::type
@@ -369,7 +369,7 @@ namespace metaSMT {
 
   template < typename SolverType >
   typename DirectSolver_Context<SolverType>::result_type
-  evaluate( DirectSolver_Context<SolverType> &ctx,
+  evaluate( DirectSolver_Context<SolverType> & ,
             typename DirectSolver_Context<SolverType>::result_type r ) {
     return r;
   }

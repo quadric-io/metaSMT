@@ -26,14 +26,14 @@ namespace metaSMT {
       template<typename STREAM>
       friend STREAM & operator<< (STREAM & out, c_tag const & self)
       {  out << "or"; return out; }
-      bool operator< (c_tag const & other) const { return false; }
+      bool operator< (c_tag const & ) const { return false; }
     };
 
     struct not_tag { 
       template<typename STREAM>
       friend STREAM & operator<< (STREAM & out, not_tag const & self)
       {  out << "not"; return out; }
-      bool operator< (not_tag const & other) const { return false; }
+      bool operator< (not_tag const & ) const { return false; }
     };
 
       // tag variant SAT

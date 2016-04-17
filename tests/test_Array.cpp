@@ -90,9 +90,6 @@ BOOST_AUTO_TEST_CASE( select_t ) {
   array a = new_array(elem_width, index_width);
   array b = new_array(elem_width, index_width);
 
-  // element
-  bitvector e = new_bitvector(elem_width);
-
   // indices
   bitvector i = new_bitvector(index_width);
   bitvector j = new_bitvector(index_width);
@@ -158,7 +155,7 @@ BOOST_AUTO_TEST_CASE( read_value_from_select ) {
   array a = new_array(elem_width, index_width);
 
   // initialize array: a[i] == i for all i
-  unsigned const size = 1 << index_width - 1;
+  unsigned const size = (1 << index_width) - 1;
   for ( unsigned u = 0; u < size; ++u ) {
     assertion( ctx, equal(bvuint(u, elem_width), select(a, bvuint(u, index_width))) );
   }

@@ -1,7 +1,5 @@
-#include <metaSMT/support/disable_warnings.hpp>
 #include <boost/proto/debug.hpp>
 #include <boost/test/unit_test.hpp>
-#include <metaSMT/support/enable_warnings.hpp>
 #include <string>
 
 #include <metaSMT/frontend/Logic.hpp>

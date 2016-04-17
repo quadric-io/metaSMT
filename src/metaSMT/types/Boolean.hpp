@@ -14,7 +14,7 @@ namespace metaSMT {
 
       /** equality of Boolean Types **/
       template <typename T>
-      bool operator== (Boolean const & a , T const & b) \
+      bool operator== (Boolean const & , T const & ) \
       {  return boost::is_same<T, Boolean>::value; }
 
   } /* type */

@@ -85,16 +85,16 @@ namespace metaSMT {
           return result_wrapper( _solution[var.NodeReadIndex()] ); 
         }
 
-        result_type operator() (predtags::var_tag const & var, boost::any args )
+        result_type operator() (predtags::var_tag const & , boost::any )
         {
           return _manager.bddVar();
         }
 
-        result_type operator() (predtags::false_tag , boost::any arg ) {
+        result_type operator() (predtags::false_tag , boost::any ) {
           return _manager.bddZero();
         }
 
-        result_type operator() (predtags::true_tag , boost::any arg ) {
+        result_type operator() (predtags::true_tag , boost::any ) {
           return _manager.bddOne();
         }
 
@@ -151,7 +151,7 @@ namespace metaSMT {
         ////////////////////////
 
         template <typename TagT>
-        result_type operator() (TagT tag, boost::any args ) {
+        result_type operator() (TagT , boost::any ) {
           assert(false && "fallback op0 called");
           return _manager.bddZero();
         }
@@ -163,7 +163,7 @@ namespace metaSMT {
         }
 
         template <typename TagT, typename T1, typename T2>
-        result_type operator() (TagT tag, T1 a, T2 b) {
+        result_type operator() (TagT , T1 , T2 ) {
           assert(false && "fallback op2 called");
           return _manager.bddZero();
         }

@@ -71,7 +71,6 @@ namespace metaSMT {
       std::vector< std::vector<unsigned> > results;  //Fürs Endergebnis 
       std::map<unsigned, logic::predicate> s; //Vector für si's 1.version
       std::vector<logic::predicate> sv;// s im vector sv
-      typedef std::pair<unsigned, logic::predicate> Si_Pair;
 
       typename Context::result_type c = evaluate(ctx, True);
 
