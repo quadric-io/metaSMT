@@ -10,15 +10,19 @@ addons:
     sources:
     - kalakris-cmake
     - ubuntu-toolchain-r-test
+    - boost-latest
     packages:
     - cmake
+    - libboost-all-dev
 
 cache:
+  apt: true
   directories:
   - deps
 
 before_install:
   - git clone https://github.com/agra-uni-bremen/dependencies.git
+  - export BOOST_ROOT=/usr
   - ./bootstrap.sh --deps deps/ --travis -m RELEASE build/
 
 before_script:
