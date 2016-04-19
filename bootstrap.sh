@@ -139,7 +139,7 @@ fi
 }
 cd $BUILD_DIR && 
 
-PREFIX_PATH=$(echo " $REQUIRES"| sed "s@[ ^] *@;$DEPS/@g")
+PREFIX_PATH=$(echo .$REQUIRES| sed "s@[ ^] *@;$DEPS/@g")
 
 eval_echo() {
   local RESULT=true
