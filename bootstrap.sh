@@ -78,10 +78,10 @@ fi
 while [[ "$@" ]]; do
   case $1 in
     --help|-h)    usage;;
-    --academi*)   REQUIRES="$REQUIRES $ACADEMIC" ;;
-    --free)       REQUIRES="$REQUIRES $FREE" ;;
-    --non-free)   REQUIRES="$REQUIRES $NONFREE" ;;
-    --travis)     REQUIRES="$REQUIRES $TRAVIS" ;;
+    --academi*)   REQUIRES="$ACADEMIC $REQUIRES" ;;
+    --free)       REQUIRES="$FREE $REQUIRES" ;;
+    --non-free)   REQUIRES="$NONFREE $REQUIRES" ;;
+    --travis)     REQUIRES="$TRAVIS $REQUIRES" ;;
     --deps|-d)    DEPS="$2"; shift;;
     --install|-i) INSTALL="$2"; shift;;
     --mode|-m)    CMAKE_ARGS="$CMAKE_ARGS -DCMAKE_BUILD_TYPE=$2"; shift;;
@@ -90,7 +90,7 @@ while [[ "$@" ]]; do
     --clean|-c)   CLEAN="rm -rf";;
     --cmake=*)    CMAKE="${1#--cmake=}";;
     --cmake)      BUILD_CMAKE="yes";;
-    --build|-b)   REQUIRES="$REQUIRES $2"; shift;;
+    --build|-b)   REQUIRES="$2 $REQUIRES"; shift;;
     -j)
         num_threads="$2";
         shift;;
