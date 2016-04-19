@@ -6,19 +6,20 @@ BUILD_DIR=$PWD/build
 BOOST=boost-1_55_0
 
 ACADEMIC="
-  lingeling-ayv-86bf266-140429
   boolector-2.2.0
+  lingeling-ayv-86bf266-140429
+  minisat-git
 "
 
 FREE="
-  cryptominisat-git
-  cvc4-unstable
-  picosat-936
-  aiger-20071012
-  cudd-2.4.2
-  minisat-git
-  stp-git
   Z3-git
+  cvc4-unstable
+  stp-git
+  cryptominisat-git
+  minisat-git
+  aiger-20071012
+  picosat-936
+  cudd-2.4.2
 "
 
 NONFREE="
@@ -26,8 +27,7 @@ NONFREE="
 "
 
 TRAVIS="
-  lingeling-ayv-86bf266-140429
-  boolector-2.2.0
+  $ACADEMIC
   cudd-2.4.2
 "
 
