@@ -13,7 +13,7 @@ addons:
     - boost-latest
     packages:
     - cmake
-    - libboost-all-dev
+    - libboost1.55-all-dev
     - g++-4.8
     - gcc-4.8
 
