@@ -6,19 +6,20 @@ BUILD_DIR=$PWD/build
 BOOST=boost-1_55_0
 
 ACADEMIC="
-  lingeling-ayv-86bf266-140429
   boolector-2.2.0
+  lingeling-ayv-86bf266-140429
+  minisat-git
 "
 
 FREE="
-  cryptominisat-git
-  cvc4-unstable
-  picosat-936
-  aiger-20071012
-  cudd-2.4.2
-  minisat-git
-  stp-git
   Z3-git
+  cvc4-unstable
+  stp-git
+  cryptominisat-git
+  minisat-git
+  aiger-20071012
+  picosat-936
+  cudd-2.4.2
 "
 
 NONFREE="
@@ -26,8 +27,7 @@ NONFREE="
 "
 
 TRAVIS="
-  lingeling-ayv-86bf266-140429
-  boolector-2.2.0
+  $ACADEMIC
   cudd-2.4.2
 "
 
@@ -78,10 +78,10 @@ fi
 while [[ "$@" ]]; do
   case $1 in
     --help|-h)    usage;;
-    --academi*)   REQUIRES="$REQUIRES $ACADEMIC" ;;
-    --free)       REQUIRES="$REQUIRES $FREE" ;;
-    --non-free)   REQUIRES="$REQUIRES $NONFREE" ;;
-    --travis)     REQUIRES="$REQUIRES $TRAVIS" ;;
+    --academi*)   REQUIRES="$ACADEMIC $REQUIRES" ;;
+    --free)       REQUIRES="$FREE $REQUIRES" ;;
+    --non-free)   REQUIRES="$NONFREE $REQUIRES" ;;
+    --travis)     REQUIRES="$TRAVIS $REQUIRES" ;;
     --deps|-d)    DEPS="$2"; shift;;
     --install|-i) INSTALL="$2"; shift;;
     --mode|-m)    CMAKE_ARGS="$CMAKE_ARGS -DCMAKE_BUILD_TYPE=$2"; shift;;
@@ -90,7 +90,7 @@ while [[ "$@" ]]; do
     --clean|-c)   CLEAN="rm -rf";;
     --cmake=*)    CMAKE="${1#--cmake=}";;
     --cmake)      BUILD_CMAKE="yes";;
-    --build|-b)   REQUIRES="$REQUIRES $2"; shift;;
+    --build|-b)   REQUIRES="$2 $REQUIRES"; shift;;
     -j)
         num_threads="$2";
         shift;;
@@ -139,7 +139,7 @@ fi
 }
 cd $BUILD_DIR && 
 
-PREFIX_PATH=$(echo $REQUIRES| sed "s@[ ^] *@;$DEPS/@g")
+PREFIX_PATH=$(echo .$REQUIRES| sed "s@[ ^] *@;$DEPS/@g")
 
 eval_echo() {
   local RESULT=true
