@@ -3,8 +3,11 @@ language: cpp
 sudo: false
 
 compiler:
-  - gcc
   - clang
+
+env:
+  global:
+   - secure: "MId6lh2WXvYg1bhirx2x4vcRZeZHPXjxFwzoxgk/Y6FQl9AbB4jZ83VVcOZzx3Un3UscKzpLZV5bB2j/NBBjlw1YxXwsFKFIGgiPQL/V1/ifHNwhFfzIVrMjtenrZUgy8twh020UQ+wISVPPcodp0Ty9T8ri99I/BXAGHFqDw2fyzvKaoWGw2PTSJ6nqlM2jGgqweeoDhKJL3BXuu26jnyQAN8W8DtNpvQae3ksDYEPiYsEVMaqI5ioc6sTWQ1sPWjU4GFVyiEQY4OPYd0Gw+6PgWPxlc+EYfFxJbTWUbKV+PfKXTnDz1a2SYNDXLthz/ElQdYB737gtDTLjBLPUGl2InrAqUzo1FmmCmvCmC9YRzLGct2EJzQXA5Ap9mUHIg2i09vj4yfg106UH7OO4j9cFQYNZufsfIg8BeuWoefXCxoRqYyF61OR0IRGxBIgkvjiSCglMokzPRspXadDtoVYPhgcGnHQUaG9L2cPizZ1fp5xjVQv0UyMdJLlT043n/X/vetRWQx6MQcpm9bUjKDuQwq6ShwWyt4d3d2AptHFy7KopO9nsO0hF8qkrtY6ga6PDVy3EnOqWHcdVN4W2DllKtTMgWGMk80Rae7ka3X2shRoEFj1TaG+16MkLmaiDq7x2zfbhHcVwMT5DvW8iYz6C6jcHwt2DVLxcDu8ufeE="
 
 addons:
   apt:
@@ -19,6 +22,14 @@ addons:
     - g++-4.8
     - gcc-4.8
     - clang-3.5
+  coverity_scan:
+    project:
+      name: "hoangmle/metaSMT"
+      description: "Build submitted via Travis CI"
+    notification_email: hle@informatik.uni-bremen.de
+    build_command_prepend: "./bootstrap.sh --deps ${DEPS} --free --non-free --academic -m RELEASE build"
+    build_command:   "make -C build"
+    branch_pattern: coverity_scan
 
 cache:
   apt: true
@@ -31,15 +42,17 @@ before_install:
   - export BOOST_ROOT=/usr
   - if [[ "${CXX}" == "g++" ]]; then export CXX="g++-4.8" CC="gcc-4.8" DEPS="deps-gcc"; fi
   - if [[ "${CXX}" == "clang++" ]]; then export CXX="clang++-3.5" CC="clang-3.5" DEPS="deps-clang"; fi
-  - ./bootstrap.sh --deps ${DEPS} --free --non-free --academic -m RELEASE build/
+  - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then ./bootstrap.sh --deps ${DEPS} --free --non-free --academic -m RELEASE build; fi
 
 before_script:
   - cd build
 
-script: make
+script: 
+  - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then make; fi
 
 after_success:
   - make test
 
 os:
   - linux
+
