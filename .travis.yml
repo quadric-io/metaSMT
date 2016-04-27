@@ -31,7 +31,7 @@ before_install:
   - export BOOST_ROOT=/usr
   - if [[ "${CXX}" == "g++" ]]; then export CXX="g++-4.8" CC="gcc-4.8" DEPS="deps-gcc"; fi
   - if [[ "${CXX}" == "clang++" ]]; then export CXX="clang++-3.5" CC="clang-3.5" DEPS="deps-clang"; fi
-  - ./bootstrap.sh --deps ${DEPS} --travis -m RELEASE build/
+  - ./bootstrap.sh --deps ${DEPS} --free --non-free --academic -m RELEASE build/
 
 before_script:
   - cd build
