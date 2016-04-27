@@ -7,7 +7,7 @@ namespace metaSMT {
 
     struct Boolean {
       template<typename STREAM> 
-      friend STREAM & operator<< (STREAM & out, Boolean const & self) \
+      friend STREAM & operator<< (STREAM & out, Boolean const & ) \
       {  return (out << "Boolean"); }
 
     };

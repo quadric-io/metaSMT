@@ -34,7 +34,7 @@ namespace metaSMT
       }
 
       template<typename Tag, typename Any>
-      result_type operator() (Tag const& , Any arg )
+      result_type operator() (Tag const& , Any )
       {
         return true_lit; 
       }
@@ -135,7 +135,7 @@ namespace metaSMT
       }
 
       template<typename T>
-      result_type operator() (T const& , result_type lhs, result_type rhs )
+      result_type operator() (T const& , result_type , result_type )
       {
         return true_lit;
       }
@@ -146,7 +146,7 @@ namespace metaSMT
       }
 
       template<typename T>
-      result_type operator() (T const& , result_type lhs )
+      result_type operator() (T const& , result_type )
       {
         return true_lit;
       }
@@ -162,7 +162,7 @@ namespace metaSMT
       }
 
       template<typename T>
-      result_type operator() (T const& , result_type op1, result_type op2, result_type op3  )
+      result_type operator() (T const& , result_type , result_type , result_type )
       {
         return true_lit;
       }

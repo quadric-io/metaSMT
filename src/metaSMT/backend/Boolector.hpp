@@ -276,14 +276,14 @@ namespace metaSMT {
         ////////////////////////
 
         template <typename TagT>
-        result_type operator() (TagT tag, boost::any args ) {
+        result_type operator() (TagT , boost::any ) {
           assert(false && "unknown operator");
           return ptr(boolector_false(_btor));
         }
 
 
         template <typename TagT>
-        result_type operator() (TagT tag, result_type a ) {
+        result_type operator() (TagT , result_type ) {
           assert(false && "unknown operator");
           return ptr(boolector_false(_btor));
         }
@@ -378,7 +378,7 @@ namespace metaSMT {
 
 
         template <typename TagT>
-        result_type operator() (TagT tag, result_type a, result_type b, result_type c) {
+        result_type operator() (TagT , result_type , result_type , result_type ) {
           assert(false && "unknown operator");
           return ptr(boolector_false(_btor));
         }

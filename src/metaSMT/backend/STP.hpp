@@ -420,7 +420,7 @@ namespace metaSMT {
       ////////////////////////
 
       template <typename TagT>
-      result_type operator() (TagT tag, boost::any args ) {
+      result_type operator() (TagT , boost::any ) {
         assert( false );
         return ptr(vc_falseExpr(vc));
       }
@@ -515,7 +515,7 @@ namespace metaSMT {
       }
 
       template <typename TagT>
-      result_type operator() (TagT tag, result_type a, result_type b, result_type c) {
+      result_type operator() (TagT , result_type , result_type , result_type ) {
         assert( false );
         return ptr(vc_falseExpr(vc));
       }

@@ -24,14 +24,14 @@ namespace metaSMT {
 
     struct c_tag { 
       template<typename STREAM>
-      friend STREAM & operator<< (STREAM & out, c_tag const & self)
+      friend STREAM & operator<< (STREAM & out, c_tag const & )
       {  out << "or"; return out; }
       bool operator< (c_tag const & ) const { return false; }
     };
 
     struct not_tag { 
       template<typename STREAM>
-      friend STREAM & operator<< (STREAM & out, not_tag const & self)
+      friend STREAM & operator<< (STREAM & out, not_tag const & )
       {  out << "not"; return out; }
       bool operator< (not_tag const & ) const { return false; }
     };

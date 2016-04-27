@@ -106,21 +106,21 @@ namespace metaSMT
 
 
       template<typename T>
-        result_type operator() (T const& , result_type lhs, result_type rhs )
+        result_type operator() (T const& , result_type , result_type )
         {
           assert ( false ); 
           return aiger_false; 
         }
 
       template<typename T, typename Arg>
-        result_type operator() (T const& var, Arg lhs )
+        result_type operator() (T const& , Arg )
         {
           assert ( false ); 
           return aiger_false; 
         }
 
       template<typename T>
-        result_type operator() (T const& var, result_type op1, result_type op2, result_type op3  )
+        result_type operator() (T const& , result_type , result_type , result_type )
         {
           assert ( false ); 
           return aiger_false; 

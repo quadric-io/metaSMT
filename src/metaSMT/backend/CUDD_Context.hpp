@@ -157,7 +157,7 @@ namespace metaSMT {
         }
 
         template <typename TagT>
-        result_type operator() (TagT tag, result_type a ) {
+        result_type operator() (TagT , result_type ) {
           assert(false && "fallback op1 called");
           return _manager.bddZero();
         }
@@ -170,7 +170,7 @@ namespace metaSMT {
 
 
         template <typename TagT, typename T1, typename T2, typename T3>
-        result_type operator() (TagT tag, T1 a, T2 b, T3 c) {
+        result_type operator() (TagT , T1 , T2 , T3 ) {
           assert(false && "fallback op3 called");
           return _manager.bddZero();
         }

@@ -6,6 +6,7 @@
 #ifdef __clang__
 #define _BACKWARD_BACKWARD_WARNING_H
 #pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wvariadic-macros"
 #pragma clang diagnostic ignored "-Wunused-parameter"
 #endif
 
@@ -14,6 +15,7 @@
 // with this definitions gcc 4.4 creates executables with random segfaults
 #define _BACKWARD_BACKWARD_WARNING_H
 #pragma GCC push_options
+#pragma GCC diagnostic ignored "-Wvariadic-macros"
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #endif
 #endif
@@ -223,7 +225,7 @@ namespace metaSMT {
       ////////////////////////
 
       template <typename TagT>
-      result_type operator() (TagT tag, boost::any args ) {
+      result_type operator() (TagT , boost::any ) {
         assert( false );
         return exprManager_.mkConst(false);
       }
@@ -309,7 +311,7 @@ namespace metaSMT {
       }
 
       template <typename TagT>
-      result_type operator() (TagT tag, result_type a, result_type b, result_type c) {
+      result_type operator() (TagT , result_type , result_type , result_type ) {
         assert( false );
         return exprManager_.mkConst(false);
       }

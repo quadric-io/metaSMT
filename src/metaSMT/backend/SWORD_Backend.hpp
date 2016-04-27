@@ -141,11 +141,8 @@ namespace metaSMT {
 
 
         template <typename TagT>
-        result_type operator() (TagT tag, boost::any args ) {
+        result_type operator() (TagT tag, boost::any ) {
           std::cout << tag << std::endl;
-          //printf(",0\n");
-          //Tag t (tag);
-          //std::cout << "SWORD op0: " << t << std::endl;
           return NULL;
         }
 
