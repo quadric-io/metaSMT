@@ -3,7 +3,7 @@ language: cpp
 sudo: false
 
 compiler:
-  - clang
+  - gcc
 
 env:
   global:
@@ -15,7 +15,6 @@ addons:
     - kalakris-cmake
     - boost-latest
     - ubuntu-toolchain-r-test
-    - llvm-toolchain-precise-3.5
     packages:
     - cmake
     - libboost1.55-dev 
@@ -24,14 +23,15 @@ addons:
     - libboost-python1.55-dev
     - libboost-thread1.55-dev
     - libboost-filesystem1.55-dev
-    - clang-3.5
+    - gcc-4.8
+    - g++-4.8
   coverity_scan:
     project:
       name: "hoangmle/metaSMT"
       description: "Build submitted via Travis CI"
     notification_email: hle@informatik.uni-bremen.de
-    build_command_prepend: "git clone https://github.com/agra-uni-bremen/dependencies.git; BOOST_ROOT=/usr CXX=clang++-3.5 CC=clang-3.5 ./bootstrap.sh --deps deps --academic -m RELEASE build; cd build"
-    build_command:   "make -j"
+    build_command_prepend: "git clone https://github.com/agra-uni-bremen/dependencies.git; BOOST_ROOT=/usr CXX=g++-4.8 CC=gcc-4.8 ./bootstrap.sh --deps deps --academic -m RELEASE build"
+    build_command:   "make -C build -j"
     branch_pattern: coverity_scan
 
 cache:
@@ -42,7 +42,7 @@ cache:
 script: cat /home/travis/build/hoangmle/metaSMT/build/cov-int/build-log.txt
 
 after_success:
-  - make test
+  - make -C build test
 
 os:
   - linux
