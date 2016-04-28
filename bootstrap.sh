@@ -12,7 +12,7 @@ ACADEMIC="
 "
 
 FREE="
-  Z3-git
+  Z3-4.4.1
   cvc4-unstable
   stp-git
   cryptominisat-git
