@@ -39,7 +39,7 @@ cache:
   directories:
   - deps
 
-script: cat cov-int/build-log.txt
+script: cat /home/travis/build/hoangmle/metaSMT/build/cov-int/build-log.txt
 
 after_success:
   - make test
