@@ -30,8 +30,8 @@ addons:
       name: "hoangmle/metaSMT"
       description: "Build submitted via Travis CI"
     notification_email: hle@informatik.uni-bremen.de
-    build_command_prepend: "./bootstrap.sh --deps deps --academic -m RELEASE build"
-    build_command:   "make -C build -j"
+    build_command_prepend: "./bootstrap.sh --deps deps --academic -m RELEASE build && cd build"
+    build_command:   "make -j"
     branch_pattern: coverity_scan
 
 cache:
@@ -44,10 +44,9 @@ before_install:
   - export BOOST_ROOT=/usr CXX="clang++-3.5" CC="clang-3.5"
 
 script: 
-  - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then make -C build -j; fi
 
 after_success:
-  - make -C build test
+  - make test
 
 os:
   - linux
