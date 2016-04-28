@@ -30,7 +30,7 @@ addons:
       name: "hoangmle/metaSMT"
       description: "Build submitted via Travis CI"
     notification_email: hle@informatik.uni-bremen.de
-    build_command_prepend: "./bootstrap.sh --deps deps --academic -m RELEASE build && cd build"
+    build_command_prepend: "git clone https://github.com/agra-uni-bremen/dependencies.git; BOOST_ROOT=/usr CXX=clang++-3.5 CC=clang-3.5 ./bootstrap.sh --deps deps --academic -m RELEASE build; cd build"
     build_command:   "make -j"
     branch_pattern: coverity_scan
 
@@ -39,11 +39,7 @@ cache:
   directories:
   - deps
 
-before_install:
-  - git clone https://github.com/agra-uni-bremen/dependencies.git
-  - export BOOST_ROOT=/usr CXX="clang++-3.5" CC="clang-3.5"
-
-script: 
+script: echo "DONE"
 
 after_success:
   - make test
