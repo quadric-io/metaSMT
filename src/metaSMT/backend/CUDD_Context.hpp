@@ -138,7 +138,12 @@ namespace metaSMT {
         result_type operator() (predtags::nor_tag , result_type a, result_type b) {
           return !(a | b);
         }
-    
+
+        result_type operator() (predtags::distinct_tag , result_type a, result_type b) {
+          return a ^ b;
+        }
+
+
         result_type operator() (predtags::ite_tag 
             , result_type a, result_type b, result_type c
         ) {
