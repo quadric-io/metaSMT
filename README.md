@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/hoangmle/metaSMT.svg?branch=qf_abv)](https://travis-ci.org/hoangmle/metaSMT)
-[![Coverity Scan Build Status](https://scan.coverity.com/projects/6215/badge.svg)](https://scan.coverity.com/projects/agra-uni-bremen-metasmt)
+[![Coverity Scan Build Status](https://scan.coverity.com/projects/8696/badge.svg)](https://scan.coverity.com/projects/hoangmle-metasmt)
 
 metaSMT is a wrapper around various SMT or SMT-like solvers.
 This means you are able to program against this library and use any
