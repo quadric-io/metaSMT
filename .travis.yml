@@ -39,7 +39,7 @@ cache:
   directories:
   - deps
 
-script: echo "DONE"
+script: cat cov-int/build-log.txt
 
 after_success:
   - make test
