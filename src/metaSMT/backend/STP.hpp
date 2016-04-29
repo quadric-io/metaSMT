@@ -118,11 +118,15 @@ namespace metaSMT {
           break;
         case BITVECTOR_TYPE:
           {
-            unsigned long long const value = getBVUnsignedLongLong(cex);
             unsigned const width = getBVLength(cex);
-            boost::dynamic_bitset<> bv(width, value);
-            std::string str; to_string(bv, str);
-            return result_wrapper(str);
+            if (width <= sizeof(unsigned long long) * 8) {
+              return result_wrapper(getBVUnsignedLongLong(cex), width);
+            } else {
+              std::string str = exprString(cex);
+              assert(str.find("0b") == 0);
+              size_t pos = str.find_first_of(' '); // find trailing space
+              return result_wrapper(pos != std::string::npos ? str.substr(2, pos - 2) : str.substr(2));
+            }
           }
           break;
         case ARRAY_TYPE:
