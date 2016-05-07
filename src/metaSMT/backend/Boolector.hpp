@@ -28,6 +28,34 @@ namespace metaSMT {
      * @brief The Boolector backend 
      */
     class Boolector {
+#ifndef metaSMT_BOOLECTOR_1_API
+    public:
+      typedef BoolectorNode* result_type;
+
+      Boolector()
+      {
+        _btor = boolector_new();
+        boolector_set_opt(_btor, "model_gen", 1);
+        boolector_set_opt(_btor, "incremental", 1);
+      }
+
+      ~Boolector() {
+        boolector_release_all(_btor);
+        boolector_delete(_btor);
+      }
+
+      result_wrapper read_value(result_type var)
+      {
+        const char* value = boolector_bv_assignment(_btor, var);
+        std::string s(value);
+        boolector_free_bv_assignment(_btor, value);
+        return result_wrapper(s);
+      }
+
+      result_type ptr(result_type expr) { return expr; }
+#else
+    public:
+      typedef BtorNode* result_type;
 
       struct BoolectorAssertion : public std::runtime_error {
         BoolectorAssertion(const char* what)
@@ -38,27 +66,38 @@ namespace metaSMT {
         throw BoolectorAssertion("internal error in boolector");
       }
 
-      public:
-        typedef BoolectorNode* result_type;
+      Boolector()
+      {
+        _btor = boolector_new();
+        boolector_enable_model_gen(_btor);
+        boolector_enable_inc_usage(_btor);
+        boolector_abort_function(&Boolector::_boolector_error);
+      }
 
-        result_type ptr(result_type expr) {
-          _exprs.push_back(expr);
-          return expr;
-        }
-      
-        Boolector()
-        {
-          _btor = boolector_new();
-          boolector_set_opt(_btor, "model_gen", 1);
-          boolector_set_opt(_btor, "incremental", 1);
-          //boolector_abort_function(&Boolector::_boolector_error);
-        }
+      ~Boolector() {
+        for (std::list<result_type>::iterator ite = _exprs.begin(); ite!=_exprs.end(); ++ite)
+           boolector_release(_btor, *ite);
+        boolector_delete(_btor);
+      }
 
-        ~Boolector() {
-          boolector_release_all(_btor);
-          boolector_delete(_btor);
-        }
+      result_wrapper read_value(result_type var)
+      {
+        char* value = boolector_bv_assignment(_btor, var);
+        std::string s(value);
+        boolector_free_bv_assignment(_btor, value);
+        return result_wrapper(s);
+      }
 
+      result_type ptr(result_type expr) {
+        _exprs.push_back(expr);
+        return expr;
+      }
+
+    private:
+      std::list<result_type> _exprs;
+#endif
+
+    public:
         void assertion( result_type e ) {
           boolector_assert(_btor, e);
         }
@@ -69,14 +108,6 @@ namespace metaSMT {
 
         bool solve() {
           return boolector_sat(_btor) == BOOLECTOR_SAT;
-        }
-
-        result_wrapper read_value(result_type var)
-        {
-          const char* value = boolector_bv_assignment(_btor, var);
-          std::string s(value);
-          boolector_free_bv_assignment(_btor, value);
-          return result_wrapper(s);
         }
 
         result_type operator() (predtags::var_tag const & , boost::any )
@@ -389,9 +420,6 @@ namespace metaSMT {
 
       protected:
         Btor *_btor;
-
-      private:
-        std::list<result_type> _exprs;
     };
 
     /**@}*/
