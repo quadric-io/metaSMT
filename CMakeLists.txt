@@ -238,7 +238,7 @@ if(Boolector_FOUND)
     message( STATUS "Use Boolector v2" )
   else()
     message( STATUS "Use Boolector v1" )
-    add_definitions(-DmetaSMT_BOOLECTOR_1_API)
+    set(metaSMT_CXXFLAGS "${metaSMT_CXXFLAGS} -DmetaSMT_BOOLECTOR_1_API")
   endif()
 endif()
 
