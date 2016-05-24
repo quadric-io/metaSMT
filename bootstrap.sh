@@ -14,7 +14,7 @@ ACADEMIC="
 FREE="
   Z3-4.4.1
   cvc4-unstable
-  stp-git
+  stp-git-basic
   cryptominisat-git
   minisat-git
   aiger-20071012
