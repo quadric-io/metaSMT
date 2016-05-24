@@ -139,7 +139,7 @@ namespace metaSMT {
 
         // predicate
         if (r.is_bool()) {
-            auto b = Z3_get_bool_value(ctx_, r);
+            Z3_lbool b = Z3_get_bool_value(ctx_, r);
             if (b == Z3_L_FALSE) return result_wrapper(false);
             if (b == Z3_L_TRUE) return result_wrapper(true);
             return result_wrapper();
