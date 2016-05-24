@@ -12,11 +12,12 @@
 #include "API/BoolEvaluator.hpp"
 #include "support/Options.hpp"
 
+#include <unordered_map>
+
 #include <boost/any.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/proto/core.hpp>
 #include <boost/proto/context.hpp>
-#include <boost/tr1/unordered_map.hpp>
 
 namespace metaSMT {
   /**
@@ -336,7 +337,7 @@ namespace metaSMT {
     using SolverContext::command;
 
     private:
-      typedef typename std::tr1::unordered_map<unsigned, result_type> VariableLookupT;
+      typedef typename std::unordered_map<unsigned, result_type> VariableLookupT;
       VariableLookupT _variables;
       Options opt;
 
