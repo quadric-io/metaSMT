@@ -62,7 +62,9 @@ add_test_executable(direct_CUDD_Distributed direct_CUDD_Distributed.cpp
   REQUIRES CUDD_FOUND)
 
 add_test_executable( direct_Boolector direct_Boolector.cpp
-  REQUIRES Boolector_FOUND )
+  REQUIRES Boolector_FOUND 
+  PROPERTIES COMPILE_FLAGS "${Boolector_CXXFLAGS}"
+  )
 
 add_test_executable( direct_Z3 direct_Z3.cpp REQUIRES Z3_FOUND )
 
