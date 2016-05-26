@@ -26,11 +26,6 @@ NONFREE="
   SWORD-1.1
 "
 
-TRAVIS="
-  $ACADEMIC
-  cudd-2.4.2
-"
-
 CMAKE=cmake
 BUILD_CMAKE="no"
 CMAKE_PACKAGE=cmake-3.2.2
@@ -49,7 +44,6 @@ usage: $0 [--free] [--non-free] build
   --academic      include academic license backends (Boolector, Lingeling)
   --free          include free backends (Aiger, CUDD, CVC4, PicoSat, Z3, ...)
   --non-free      include non-free backends (SWORD, Lingeling)
-  --travis        include selected backends for testing with Travis CI
   --clean         delete build directory before creating a new one
   --deps <dir>    build dependencies in this directory
    -d <dir>       can be shared in different projects
@@ -81,7 +75,6 @@ while [[ "$@" ]]; do
     --academi*)   REQUIRES="$ACADEMIC $REQUIRES" ;;
     --free)       REQUIRES="$FREE $REQUIRES" ;;
     --non-free)   REQUIRES="$NONFREE $REQUIRES" ;;
-    --travis)     REQUIRES="$TRAVIS $REQUIRES" ;;
     --deps|-d)    DEPS="$2"; shift;;
     --install|-i) INSTALL="$2"; shift;;
     --mode|-m)    CMAKE_ARGS="$CMAKE_ARGS -DCMAKE_BUILD_TYPE=$2"; shift;;
