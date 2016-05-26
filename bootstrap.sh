@@ -55,7 +55,7 @@ usage: $0 [--free] [--non-free] build
    -G <generator> pass generator to CMake
   --cmake=/p/t/c  use this version of CMake
   --cmake         build a custom CMake version
-  --build <pkg>   build this dependency package, must exist in depdencies
+  --build <pkg>   build this dependency package, must exist in dependencies
   -b <pkg>
   -j N            The number of make jobs
   <build>         the directory to setup the build environment in
@@ -83,7 +83,7 @@ while [[ "$@" ]]; do
     --clean|-c)   CLEAN="rm -rf";;
     --cmake=*)    CMAKE="${1#--cmake=}";;
     --cmake)      BUILD_CMAKE="yes";;
-    --build|-b)   REQUIRES="$2 $REQUIRES"; shift;;
+    --build|-b)   REQUIRES="$REQUIRES $2"; shift;;
     -j)
         num_threads="$2";
         shift;;
