@@ -33,7 +33,7 @@ function(_get_real_library lib real_lib)
     set( _reallib "${_lib_location}")
   elseif (EXISTS ${lib})
     set( _reallib "${lib}")
-  elseif (${lib} MATCHES "-l.")
+  elseif (${lib} MATCHES "^-") # starts with -
     set( _reallib "${lib}")
   else ()
     set( _reallib "-l${lib}")
@@ -51,7 +51,7 @@ function(_get_ld_path_and_lib lib ld_path ld_lib)
     set(${ld_path} "-L${_ld_path}" PARENT_SCOPE)
     set(${ld_lib} "${_ld_lib}" PARENT_SCOPE)
   else ()
-    # assume "-l" prefix
+    # assume "-" prefix
     set(${ld_path} "" PARENT_SCOPE)
     set(${ld_lib} "${lib}" PARENT_SCOPE)
   endif ()

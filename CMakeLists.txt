@@ -158,11 +158,10 @@ if(Z3_FOUND)
   find_package(OpenMP QUIET)
   find_package(Threads QUIET)
   find_library(RT_LIB rt)
-  set(Z3_LIBRARIES ${Z3_LIBRARIES} ${RT_LIB} ${CMAKE_THREAD_LIBS_INIT})
+  set(Z3_LIBRARIES ${Z3_LIBRARIES} ${OpenMP_CXX_FLAGS} ${RT_LIB} ${CMAKE_THREAD_LIBS_INIT})
 
   include(CheckCXXSourceRuns)
 
-  set(CMAKE_REQUIRED_FLAGS ${OpenMP_CXX_FLAGS})
   set(CMAKE_REQUIRED_INCLUDES ${Z3_INCLUDE_DIR})
   set(CMAKE_REQUIRED_LIBRARIES ${Z3_LIBRARIES})
 
@@ -176,7 +175,7 @@ int main(int argc, const char *argv[]) {
   Z3_WORKS)
 
   if( NOT Z3_WORKS )
-    message(WARNING "Disabling Z3. A version of Z3 >= 4.0 is required.")
+    message(WARNING "Disabling Z3 due to linking errors.")
     set( Z3_FOUND 0)
   endif()
 endif()
