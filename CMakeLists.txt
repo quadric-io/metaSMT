@@ -146,15 +146,6 @@ else()
   set(GMPXX_LIBRARIES "")
 endif()
 
-find_package(OMP QUIET)
-set_package_info(OMP "optional, required by some backends")
-## later versions of GMP link against libomp
-if(NOT OMP_FOUND)
-  find_library(OMP_LIBRARIES gomp PATHS ${OMP_DIR})
-else()
-  set(OMP_LIBRARIES "")
-endif()
-
 if(Z3_FOUND)
   if( GMPXX_LIBRARIES )
     set(Z3_LIBRARIES ${Z3_LIBRARIES} ${GMPXX_LIBRARIES})
@@ -163,18 +154,15 @@ if(Z3_FOUND)
   if( GMP_LIBRARIES )
     set(Z3_LIBRARIES ${Z3_LIBRARIES} ${GMP_LIBRARIES})
   endif()
-
-  if( OMP_LIBRARIES )
-    set(Z3_LIBRARIES ${Z3_LIBRARIES} ${OMP_LIBRARIES})
-  endif()
-
-  find_library(RT_LIB rt)
+ 
+  find_package(OpenMP QUIET)
   find_package(Threads QUIET)
-
+  find_library(RT_LIB rt)
   set(Z3_LIBRARIES ${Z3_LIBRARIES} ${RT_LIB} ${CMAKE_THREAD_LIBS_INIT})
 
   include(CheckCXXSourceRuns)
 
+  set(CMAKE_REQUIRED_FLAGS ${OpenMP_CXX_FLAGS})
   set(CMAKE_REQUIRED_INCLUDES ${Z3_INCLUDE_DIR})
   set(CMAKE_REQUIRED_LIBRARIES ${Z3_LIBRARIES})
 
