@@ -5,11 +5,12 @@
 #include "../tags/QF_BV.hpp"
 #include "../tags/QF_UF.hpp"
 #include "../tags/Array.hpp"
-#include <boost/mpl/map/map40.hpp>
+
+#include <list>
+#include <sstream>
+
 #include <boost/any.hpp>
 #include <boost/tuple/tuple.hpp>
-#include <list>
-#include <iostream>
 
 #include <yices.h>
 
