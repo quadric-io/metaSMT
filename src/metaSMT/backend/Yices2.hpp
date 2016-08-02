@@ -28,7 +28,12 @@ struct domain_sort_visitor : boost::static_visitor<type_t> {
 
   type_t operator()(type::BitVector const &arg) const { return yices_bv_type(arg.width); }
 
-  type_t operator()(type::Array const &arg) const {}
+  type_t operator()(type::Array const &arg) const {
+    type_t index_type = yices_bv_type(arg.index_width);
+    type_t var_type = yices_bv_type(arg.elem_width);
+    type_t function_type = yices_function_type(1, &index_type, var_type);
+    return yices_new_uninterpreted_term(function_type);
+  }
 
   context_t &ctx;
 };  // domain_sort_visitor
