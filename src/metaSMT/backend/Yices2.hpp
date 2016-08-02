@@ -16,11 +16,14 @@
 
 namespace metaSMT {
 namespace solver {
+
 namespace predtags = ::metaSMT::logic::tag;
 namespace bvtags = ::metaSMT::logic::QF_BV::tag;
 namespace uftags = ::metaSMT::logic::QF_UF::tag;
 namespace arraytags = ::metaSMT::logic::Array::tag;
+
 namespace detail {
+
 struct domain_sort_visitor : boost::static_visitor<type_t> {
   domain_sort_visitor(context_t &ctx) : ctx(ctx) {}
 
@@ -38,6 +41,7 @@ struct domain_sort_visitor : boost::static_visitor<type_t> {
   context_t &ctx;
 };  // domain_sort_visitor
 }
+
 class Yices2 {
  public:
   typedef term_t result_type;
@@ -84,8 +88,8 @@ class Yices2 {
 
   result_wrapper read_value(result_type var) {
     model_t *model = yices_get_model(ctx, true);
-    if (model == NULL) {
-      throw std::runtime_error(std::string("CAN NOT GET THE MODEL"));
+    if (!model) {
+      throw std::runtime_error(std::string("Cannot get model from Yices2"));
     }
     if (yices_term_is_bitvector(var)) {
       int32_t bits = yices_term_bitsize(var);
@@ -98,18 +102,19 @@ class Yices2 {
         delete[] array;
         return result_wrapper(booleans);
       } else {
-        throw std::runtime_error(std::string("FAIL AT READ_VALUE BITVECTOR"));
+        throw std::runtime_error(std::string("Failed to read bitvector from Yices2"));
       }
-    } else if (yices_term_is_bool(var) == 1) {
+    } else if (yices_term_is_bool(var)) {
       int32_t value = 0;
       if (yices_get_bool_value(model, var, &value) == 0) {
         return result_wrapper((bool)value);
       } else {
-        throw std::runtime_error(std::string("FAIL AT READ_VALUE BOOL"));
+        throw std::runtime_error(std::string("Failed to read bool from Yices2"));
       }
-    } else if (yices_term_is_tuple(var) == 1) {
-      throw std::runtime_error(std::string("TUPLE!"));
+    } else if (yices_term_is_tuple(var)) {
+      throw std::runtime_error(std::string("Reading tuple from Yices2 not yet supported"));
     }
+
     char *error = yices_error_string();
     std::stringstream ss;
     ss << "Error:";
