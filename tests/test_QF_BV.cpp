@@ -81,6 +81,44 @@ BOOST_AUTO_TEST_CASE( incremental )
   BOOST_REQUIRE( solve(ctx) );
 }
 
+// The intent is to catch a bug in Yices2
+BOOST_AUTO_TEST_CASE( incremental_1 )
+{
+  bitvector a = new_bitvector(32);
+  bitvector b = new_bitvector(32);
+  bitvector c = new_bitvector(32);
+  assertion(ctx,equal(bvadd(a,b),c)); // a + b == c
+  assertion(ctx,bvsle(bvsint(10,32),a)); // 10 <= a
+  assertion(ctx,bvsle(a,bvsint(20,32))); // a <= 20
+  assertion(ctx,bvsle(bvadd(bvadd(a,b),c),bvsint(200,32))); // a + b + c <= 200
+  assertion(ctx,equal(bvadd(bvadd(a,b),c),bvsint(100,32))); // a + b + c == 100
+  assumption(ctx,equal(bvsint(0,32), b)); // b == 0
+  assumption(ctx,equal(bvsint(0,32), c)); // c == 0
+  BOOST_REQUIRE(! solve(ctx) );
+  assumption(ctx,equal(bvsint(0,32), c)); // c == 0
+  BOOST_REQUIRE(! solve(ctx) );
+  // with no assuptions, the following call should succeed
+  BOOST_REQUIRE( solve(ctx) );
+}
+
+// The intent is to catch this bug in CVC4: http://cvc4.cs.nyu.edu/bugs/show_bug.cgi?id=731
+BOOST_AUTO_TEST_CASE( incremental_2 )
+{
+  bitvector var1 = new_bitvector(8);
+  bitvector var2 = new_bitvector(8);
+  
+  assertion(ctx,nequal(var1, var2));
+  assertion(ctx,bvult(var1, bvuint(8,8)));
+
+  for (int i = 0; i < 10; i++) {
+    BOOST_REQUIRE( solve(ctx) ); 
+    unsigned v1 = read_value(ctx, var1);
+    unsigned v2 = read_value(ctx, var2);
+    BOOST_REQUIRE(v1 != v2) ;
+    BOOST_REQUIRE_LT(v1, 8); 
+  }    
+}
+
 BOOST_AUTO_TEST_CASE( equal_t )
 {
   bitvector x = new_bitvector(1);
