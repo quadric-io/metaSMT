@@ -9,7 +9,7 @@ ACADEMIC="
   boolector-2.2.0
   lingeling-ayv-86bf266-140429
   minisat-git
-  yices-2.4.2
+  yices-2.5.1
 "
 
 FREE="
