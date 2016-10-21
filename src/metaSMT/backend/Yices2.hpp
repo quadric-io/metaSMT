@@ -7,7 +7,6 @@
 #include "../tags/Array.hpp"
 
 #include <list>
-#include <sstream>
 
 #include <boost/any.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -42,7 +41,16 @@ struct domain_sort_visitor : boost::static_visitor<type_t> {
 };  // domain_sort_visitor
 }
 
-class Yices2 {
+template <class T>
+struct ObjectCounter {
+  static int count;
+};
+
+template <class T>
+int ObjectCounter<T>::count = 0;
+
+template <bool RealIncreamentalMode = false>
+class Yices2Impl {
  public:
   typedef term_t result_type;
   typedef std::list<term_t> Exprs;
@@ -53,43 +61,52 @@ class Yices2 {
   bool isPushed_;
   context_t *ctx;
 
+  std::string yices_error_message_with_prefix(std::string prefix) { return prefix + yices_error_string(); }
+
   term_t throw_error(term_t value) {
     if (value == NULL_TERM) {
-      char *error = yices_error_string();
-      std::stringstream ss;
-      ss << "Error: ";
-      ss << error;
-      throw std::runtime_error(ss.str());
+      throw std::runtime_error(yices_error_message_with_prefix("throw error: "));
     }
     return value;
   }
 
  public:
-  Yices2() {
-    yices_init();
+  Yices2Impl() : isPushed_(false) {
+    if (ObjectCounter<Yices2Impl>::count == 0) {
+      yices_init();
+    }
     ctx_config_t *config = yices_new_config();
     yices_set_config(config, "mode", "interactive");
     ctx = yices_new_context(config);
     yices_free_config(config);
+    ObjectCounter<Yices2Impl>::count++;
   }
 
-  ~Yices2() { yices_exit(); }
+  ~Yices2Impl() {
+    yices_free_context(ctx);
+    ObjectCounter<Yices2Impl>::count--;
+    if (ObjectCounter<Yices2Impl>::count == 0) {
+      yices_exit();
+    }
+  }
 
   void assertion(result_type e) { assertions_.push_back(e); }
 
   void assumption(result_type e) { assumptions_.push_back(e); }
 
   bool solve() {
-    removeOldAssumptions();
+    if (RealIncreamentalMode) removeOldAssumptions();
+    else yices_reset_context(ctx);
     pushAssertions();
     pushAssumptions();
-    return (yices_check_context(ctx, NULL) == STATUS_SAT);
+    smt_status_t status = yices_check_context(ctx, NULL);
+    return (status == STATUS_SAT);
   }
 
   result_wrapper read_value(result_type var) {
     model_t *model = yices_get_model(ctx, true);
     if (!model) {
-      throw std::runtime_error(std::string("Cannot get model from Yices2"));
+      throw std::runtime_error(std::string("read_value: Cannot get model from Yices2"));
     }
     if (yices_term_is_bitvector(var)) {
       int32_t bits = yices_term_bitsize(var);
@@ -102,25 +119,20 @@ class Yices2 {
         delete[] array;
         return result_wrapper(booleans);
       } else {
-        throw std::runtime_error(std::string("Failed to read bitvector from Yices2"));
+        throw std::runtime_error(std::string("read_value: Failed to read bitvector from Yices2"));
       }
     } else if (yices_term_is_bool(var)) {
       int32_t value = 0;
       if (yices_get_bool_value(model, var, &value) == 0) {
         return result_wrapper((bool)value);
       } else {
-        throw std::runtime_error(std::string("Failed to read bool from Yices2"));
+        throw std::runtime_error(std::string("read_value: Failed to read bool from Yices2"));
       }
     } else if (yices_term_is_tuple(var)) {
-      throw std::runtime_error(std::string("Reading tuple from Yices2 not yet supported"));
+      throw std::runtime_error(std::string("read_value: Reading tuple from Yices2 not yet supported"));
     }
 
-    char *error = yices_error_string();
-    std::stringstream ss;
-    ss << "Error:";
-    ss << error;
-
-    throw std::runtime_error(ss.str());
+    throw std::runtime_error(yices_error_message_with_prefix("read_value: "));
     return result_wrapper(false);
   }
 
@@ -130,6 +142,7 @@ class Yices2 {
     type_t bool_type = yices_bool_type();
     return yices_new_uninterpreted_term(bool_type);
   }
+
   result_type operator()(predtags::false_tag, boost::any) { return yices_false(); }
 
   result_type operator()(predtags::true_tag, boost::any) { return yices_true(); }
@@ -176,6 +189,7 @@ class Yices2 {
 
   result_type operator()(predtags::ite_tag, result_type a, result_type b, result_type c) { return yices_ite(a, b, c); }
   // BVTAG
+
   result_type operator()(bvtags::bit0_tag, boost::any) { return yices_bvconst_zero(1); }
 
   result_type operator()(bvtags::bit1_tag, boost::any) { return yices_bvconst_one(1); }
@@ -350,6 +364,7 @@ class Yices2 {
     assert(false && "unknown operator");
     return yices_false();
   }
+
   /*
   template <typename TagT>
   result_type operator() (TagT , result_type a, result_type b) {}
@@ -357,36 +372,47 @@ class Yices2 {
   template <typename TagT>
   result_type operator() (TagT , result_type , result_type , result_type ) {}*/
 
-  void command(Yices2 const &) {}
+  void command(Yices2Impl const &) {}
 
  private:
   void removeOldAssumptions() {
     if (isPushed_) {
-      yices_pop(ctx);
+      if (yices_pop(ctx)) {
+        throw std::runtime_error(yices_error_message_with_prefix("removeOldAssumptions error: "));
+      }
       isPushed_ = false;
     }
   }
 
   void pushAssumptions() {
-    yices_push(ctx);
-    isPushed_ = true;
-
+    if (assumptions_.empty()) return;
+    if (RealIncreamentalMode) {
+      if (yices_push(ctx)) {
+        throw std::runtime_error(yices_error_message_with_prefix("pushAssumptions error: "));
+      }
+      isPushed_ = true;
+    }
     applyAssertions(assumptions_);
     assumptions_.clear();
   }
 
   void pushAssertions() {
     applyAssertions(assertions_);
-    assertions_.clear();
+    if (RealIncreamentalMode) assertions_.clear();
   }
 
   void applyAssertions(Exprs const &expressions) {
     for (Exprs::const_iterator it = expressions.begin(), ie = expressions.end(); it != ie; ++it) {
-      yices_assert_formula(ctx, *it);
+      if (yices_assert_formula(ctx, *it)) {
+        throw std::runtime_error(yices_error_message_with_prefix("applyAssertions error: "));
+      }
     }
   }
 
-};  // class Yices2
+};  // class Yices2Impl
+
+// redefine to Yices2Impl<false> if incremental solving does not work as expected
+typedef Yices2Impl<true> Yices2;
 
 }  // solver
 }  // metaSMT
