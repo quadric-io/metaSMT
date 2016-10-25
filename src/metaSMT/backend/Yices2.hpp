@@ -23,8 +23,8 @@ namespace arraytags = ::metaSMT::logic::Array::tag;
 
 namespace detail {
 
-struct domain_sort_visitor : boost::static_visitor<type_t> {
-  domain_sort_visitor(context_t &ctx) : ctx(ctx) {}
+struct yices_type_visitor : boost::static_visitor<type_t> {
+  yices_type_visitor(context_t &ctx) : ctx(ctx) {}
 
   type_t operator()(type::Boolean const &) const { return yices_bool_type(); }
 
@@ -38,7 +38,7 @@ struct domain_sort_visitor : boost::static_visitor<type_t> {
   }
 
   context_t &ctx;
-};  // domain_sort_visitor
+};  // yices_type_visitor
 }
 
 template <class T>
@@ -76,7 +76,7 @@ class Yices2Impl {
       yices_init();
     }
     ctx_config_t *config = yices_new_config();
-    yices_set_config(config, "mode", "interactive");
+    yices_default_config_for_logic(config, "QF_AUFBV");
     ctx = yices_new_context(config);
     yices_free_config(config);
     ObjectCounter<Yices2Impl>::count++;
@@ -316,14 +316,14 @@ class Yices2Impl {
 
   result_type operator()(uftags::function_var_tag const &var, boost::any) {
     unsigned const num_args = var.args.size();
-    type_t *domain_sort = new type_t[num_args];
+    type_t *yices_type = new type_t[num_args];
 
-    type_t result_sort = boost::apply_visitor(detail::domain_sort_visitor(*ctx), var.result_type);
+    type_t result_sort = boost::apply_visitor(detail::yices_type_visitor(*ctx), var.result_type);
 
     for (unsigned u = 0; u < num_args; ++u) {
-      domain_sort[u] = boost::apply_visitor(detail::domain_sort_visitor(*ctx), var.args[u]);
+      yices_type[u] = boost::apply_visitor(detail::yices_type_visitor(*ctx), var.args[u]);
     }
-    type_t function_type = yices_function_type(num_args, domain_sort, result_sort);
+    type_t function_type = yices_function_type(num_args, yices_type, result_sort);
     return yices_new_uninterpreted_term(function_type);
   }
 
