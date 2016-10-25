@@ -126,7 +126,7 @@ namespace metaSMT {
       // typedef z3::ast result_type;
 
       Z3_Backend()
-        : solver_(ctx_)
+        : solver_(ctx_, "QF_AUFBV")
         , assumption_( (*this)(predtags::true_tag(), boost::any()) )
       {}
 
