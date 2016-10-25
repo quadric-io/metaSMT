@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../tags/Array.hpp"
 #include "../tags/QF_BV.hpp"
 #include "../result_wrapper.hpp"
 
@@ -39,7 +40,6 @@
 #include <boost/any.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <list>
-#include "../tags/Array.hpp"
 
 namespace metaSMT {
   namespace solver {
@@ -64,6 +64,7 @@ namespace metaSMT {
       {
         engine_.setOption("incremental", true);
         engine_.setOption("produce-models", true);
+        engine_.setLogic("QF_ABV");
       }
 
       ~CVC4() {
