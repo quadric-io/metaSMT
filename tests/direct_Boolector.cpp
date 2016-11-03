@@ -14,6 +14,5 @@ struct Solver_Fixture {
 #include "test_Array.cpp"
 #include "test_unsat.cpp"
 #include "test_cardinality.cpp"
-#include "test_lazy.cpp"
 #include "test_annotate.cpp"
 #include "test_evaluator.cpp"
