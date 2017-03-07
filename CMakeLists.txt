@@ -1,12 +1,16 @@
 PROJECT(metaSMT)
 cmake_minimum_required(VERSION 2.8.9)
 
-include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-if(COMPILER_SUPPORTS_CXX11)
-	add_definitions(-std=c++11)
-else()
-	message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} does not support -std=c++11. Please use a different C++ compiler.")
+option(metaSMT_REQUIRE_CXX11 "make C++11 a requirement" on)
+
+if (metaSMT_REQUIRE_CXX11)
+  include(CheckCXXCompilerFlag)
+  CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+  if(COMPILER_SUPPORTS_CXX11)
+    add_definitions(-std=c++11)
+  else()
+    message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} does not support -std=c++11. Please use a different C++ compiler.")
+  endif()
 endif()
 
 include(CheckIncludeFileCXX)
