@@ -14,8 +14,8 @@
 
 #if __cplusplus <= 199711L
 
-#include <tr1/unordered_map>
-#define unordered_map std::tr1::unordered_map
+#include <boost/unordered_map.hpp>
+#define unordered_map boost::unordered_map
 
 #else
 
