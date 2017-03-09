@@ -14,7 +14,7 @@ ACADEMIC="
 
 FREE="
   Z3-4.4.1
-  cvc4-1.5pre-smtcomp2016
+  cvc4-smtcomp2015-stable
   stp-git-basic
   cryptominisat-git
   minisat-git
