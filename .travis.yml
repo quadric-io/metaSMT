@@ -19,7 +19,7 @@ compiler:
 
 matrix:
   exclude:
-  - compiler: gcc
+  - compiler: clang
     env: metaSMTConfig="-b Z3-4.4.1"
   - compiler: gcc
     env: metaSMTConfig="-b cvc4-smtcomp2015-stable"
