@@ -3,8 +3,9 @@ cmake_minimum_required(VERSION 2.8.9)
 
 option(metaSMT_REQUIRE_CXX11 "make C++11 a requirement" on)
 
+include(CheckCXXCompilerFlag)
+
 if (metaSMT_REQUIRE_CXX11)
-  include(CheckCXXCompilerFlag)
   CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
   if(COMPILER_SUPPORTS_CXX11)
     add_definitions(-std=c++11)
@@ -22,11 +23,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/Modules )
 
 set(Boost_NO_BOOST_CMAKE true)
 set(Boost_NO_SYSTEM_PATHS true)
-find_package(Boost)
-
-if(NOT ${Boost_FOUND})
-  message(FATAL_ERROR "Boost could not be found.")
-endif()
+find_package(Boost REQUIRED)
 
 # From v1.57.0 Boost.Any does not require RTTI
 if (${Boost_VERSION} VERSION_LESS 105700)
@@ -228,6 +225,7 @@ endif ()
 #############################################################
 
 set(metaSMT_AVAILABLE_QF_ABV_SOLVERS "")
+set(metaSMT_INCLUDES ${Boost_INCLUDE_DIRS})
 
 if(SWORD_FOUND)
   config_find(SWORD ${SWORD_DIR})
