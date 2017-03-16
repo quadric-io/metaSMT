@@ -1,77 +1,41 @@
 language: cpp
 dist: trusty
-sudo: false
-
-env:
-- metaSMTConfig="--academic"                                            # boolector with lingeling and minisat
-                                                                        # yices2
-- metaSMTConfig="--academic -DmetaSMT_REQUIRE_CXX11=off"                # now without C++11
-                                                                        # 
-- metaSMTConfig="-b Z3-4.4.1"                                           # z3
-- metaSMTConfig="-b cvc4-smtcomp2015-stable"                            # cvc4
-- metaSMTConfig="-b stp-git-basic -b cryptominisat-git -b minisat-git"  # stp with cryptominisat and minisat
-- metaSMTConfig="--non-free"                                            # sword
-- metaSMTConfig="--non-free" BOOST_VERSION=1.60.0                       # sword
-- metaSMTConfig="-b aiger-20071012 -b picosat-936 -b cudd-2.4.2"        # others
 
 compiler:
-  - gcc
-  - clang
+    - gcc
 
-matrix:
-  exclude:
-  - compiler: clang
-    env: metaSMTConfig="-b Z3-4.4.1"
-  - compiler: gcc
-    env: metaSMTConfig="-b cvc4-smtcomp2015-stable"
-  - compiler: clang
-    env: metaSMTConfig="--non-free"
-  - compiler: clang
-    env: metaSMTConfig="--non-free" BOOST_VERSION=1.60.0
-  - compiler: clang
-    env: metaSMTConfig="-b aiger-20071012 -b picosat-936 -b cudd-2.4.2"
+env:
+    matrix:
+    # Boolector, STP and Yices2
+    - SOLVERS="--academic -DmetaSMT_USE_CVC4=off"
+    # CVC4
+    - SOLVERS="-DCVC4_DIR=/usr/cvc4"
 
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    - boost-latest
-    packages:
-    - libboost1.55-dev
-    - g++-4.8
-    - gcc-4.8
-    - libgmp-dev
-    - gperf # required by yices2
-
-cache:
-  apt: true
-  directories:
-  - deps-gcc
-  - deps-clang
-
+cache: apt
 before_install:
-  - git clone https://github.com/agra-uni-bremen/dependencies.git
-  - |
-      if [[ "${BOOST_VERSION}" != "" ]]; then
-        BOOST_DIR=`pwd`/boost-${BOOST_VERSION}
-        BOOST_URL="http://sourceforge.net/projects/boost/files/boost/${BOOST_VERSION}/boost_${BOOST_VERSION//\./_}.tar.gz"
-        mkdir -p ${BOOST_DIR}
-        { travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xz -C ${BOOST_DIR}; } || exit 1
-        export BOOST_ROOT=${BOOST_DIR}
-      else
-        export BOOST_ROOT=/usr
-      fi
-  - if [[ "${CXX}" == "g++" ]]; then export CXX="g++-4.8" CC="gcc-4.8" DEPS="deps-gcc"; fi
-  - if [[ "${CXX}" == "clang++" ]]; then export DEPS="deps-clang"; fi
-  - ./bootstrap.sh --deps ${DEPS} ${metaSMTConfig} -m RELEASE build/
+    # Needed for gcc4.8
+    - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+    # Update package information
+    - sudo apt-get update
+    # Get gcc, Boost, gmp, gperf
+    - sudo apt-get -y install gcc-4.8 g++-4.8 libboost-dev libgmp-dev gperf
+    # Make gcc4.8 the default gcc version
+    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 20
+    - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 20
+    # Get CVC4
+    - wget http://www.informatik.uni-bremen.de/agra/systemc-verification/media/snapshots/cvc4-594301e.tar.gz
+    - tar -xf cvc4-594301e.tar.gz
+    - sudo mv cvc4 /usr
 
 before_script:
-  - cd build
+    # Get dependencies
+    - git clone https://github.com/agra-uni-bremen/dependencies.git
+    # Bootstrap
+    - export BOOST_ROOT=/usr
+    - ./bootstrap.sh --deps deps ${SOLVERS} -m RELEASE build/
+    - cd build
 
 script: make
 
 after_success:
-  - make test
-
-os:
-  - linux
+    - make test
