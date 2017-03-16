@@ -89,7 +89,13 @@ add_test_executable( direct_Z3 direct_Z3.cpp REQUIRES Z3_FOUND )
 
 add_test_executable( direct_STP direct_STP.cpp REQUIRES STP_FOUND )
 
-add_test_executable( direct_CVC4 direct_CVC4.cpp REQUIRES CVC4_FOUND )
+if (NOT CVC4_CXXFLAGS)
+  set(CVC4_CXXFLAGS "-DCVC4_DUMMY_FLAG")
+endif()
+add_test_executable( direct_CVC4 direct_CVC4.cpp
+  REQUIRES CVC4_FOUND
+  PROPERTIES COMPILE_FLAGS "${CVC4_CXXFLAGS}"
+  )
 
 add_test_executable( direct_MiniSAT direct_MiniSAT.cpp
   REQUIRES MiniSat_FOUND

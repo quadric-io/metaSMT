@@ -211,6 +211,13 @@ if(CVC4_FOUND)
     set(CVC4_LIBRARIES ${CVC4_LIBRARIES} ${GMP_LIBRARIES})
   endif()
 
+  if(EXISTS "${CVC4_INCLUDE_DIR}/cvc4/expr/kind.h")
+    file(STRINGS ${CVC4_INCLUDE_DIR}/cvc4/expr/kind.h CVC4_KIND_IFF REGEX "IFF")
+    if (NOT CVC4_KIND_IFF)
+      message(STATUS "CVC4 version without boolean operator IFF")
+      set(CVC4_CXXFLAGS "-DCVC4_WITHOUT_KIND_IFF")
+    endif()
+  endif()
 endif()
 
 
@@ -270,6 +277,7 @@ if(CVC4_FOUND)
   config_find(CVC4 ${CVC4_DIR})
   list(APPEND metaSMT_LIBS ${CVC4_LIBRARIES})
   list(APPEND metaSMT_INCLUDES ${CVC4_INCLUDE_DIR})
+  set(metaSMT_CXXFLAGS "${metaSMT_CXXFLAGS} ${CVC4_CXXFLAGS}")
   list(APPEND metaSMT_AVAILABLE_QF_ABV_SOLVERS "CVC4")
 endif()
 
