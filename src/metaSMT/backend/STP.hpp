@@ -533,5 +533,17 @@ namespace metaSMT {
       Exprs exprs;
     }; // STP
 
+    struct STP_CMS : public STP {
+      STP_CMS() {
+        vc_setInterfaceFlags(vc, CMS4, 0);
+      }
+    };
+
+    struct STP_MS : public STP {
+      STP_MS() {
+        vc_setInterfaceFlags(vc, MS, 0);
+      }
+    };
+
   } // solver
 } // metaSMT
