@@ -7,7 +7,7 @@ env:
                                                                         # yices2
 - metaSMTConfig="--academic -DmetaSMT_REQUIRE_CXX11=off"                # now without C++11
                                                                         # 
-- metaSMTConfig="-b Z3-4.4.1"                                           # z3
+- metaSMTConfig="-b Z3-4.5.0"                                           # z3
 - metaSMTConfig="-b cvc4-smtcomp2015-stable"                            # cvc4
 - metaSMTConfig="-b stp-git-basic -b cryptominisat-git -b minisat-git"  # stp with cryptominisat and minisat
 - metaSMTConfig="--non-free"                                            # sword
@@ -21,7 +21,7 @@ compiler:
 matrix:
   exclude:
   - compiler: clang
-    env: metaSMTConfig="-b Z3-4.4.1"
+    env: metaSMTConfig="-b Z3-4.5.0"
   - compiler: gcc
     env: metaSMTConfig="-b cvc4-smtcomp2015-stable"
   - compiler: clang
