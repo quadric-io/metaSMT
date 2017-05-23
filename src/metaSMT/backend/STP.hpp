@@ -12,6 +12,7 @@ extern "C" {
 #include <boost/any.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <list>
+#include <cstdio>
 
 namespace metaSMT {
   namespace solver {
