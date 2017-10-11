@@ -14,9 +14,8 @@ ACADEMIC="
 
 FREE="
   Z3-4.5.0
-  cvc4-smtcomp2015-stable
-  stp-git-basic
-  cryptominisat-git
+  cvc4-1.5
+  stp-2.3.1-basic
   minisat-git
   aiger-20071012
   picosat-936
