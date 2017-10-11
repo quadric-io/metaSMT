@@ -3,16 +3,22 @@ dist: trusty
 sudo: false
 
 env:
+# stable
 - metaSMTConfig="--academic"                                            # boolector with lingeling and minisat
                                                                         # yices2
 - metaSMTConfig="--academic -DmetaSMT_REQUIRE_CXX11=off"                # now without C++11
                                                                         # 
-- metaSMTConfig="-b Z3-4.5.0"                                           # z3
-- metaSMTConfig="-b cvc4-smtcomp2015-stable"                            # cvc4
-- metaSMTConfig="-b stp-git-basic -b cryptominisat-git -b minisat-git"  # stp with cryptominisat and minisat
+- metaSMTConfig="-b Z3-4.5.0-ubuntu-14.04-x64"                          # z3 4.5.0 pre-built
+- metaSMTConfig="-b Z3-4.5.0"                                           # z3 4.5.0
+- metaSMTConfig="-b cvc4-1.5"                                           # cvc4 1.5
+- metaSMTConfig="-b stp-2.3.1-basic -b minisat-git"                     # stp 2.3.1 with minisat
 - metaSMTConfig="--non-free"                                            # sword
-- metaSMTConfig="--non-free" BOOST_VERSION=1.60.0                       # sword
+- metaSMTConfig="--non-free" BOOST_VERSION=1.60.0                       # sword and boost-1.60.0
 - metaSMTConfig="-b aiger-20071012 -b picosat-936 -b cudd-2.4.2"        # others
+# unstable
+- metaSMTConfig="-b stp-git -b cryptominisat-git -b minisat-git"        # stp upstream with cryptominisat and minisat
+- metaSMTConfig="-b Z3-git"                                             # z3 upstream
+- metaSMTConfig="-b cvc4-unstable"                                      # cvc4 upstream
 
 compiler:
   - gcc
@@ -21,15 +27,28 @@ compiler:
 matrix:
   exclude:
   - compiler: clang
+    env: metaSMTConfig="-b Z3-git"
+  - compiler: clang
     env: metaSMTConfig="-b Z3-4.5.0"
   - compiler: gcc
-    env: metaSMTConfig="-b cvc4-smtcomp2015-stable"
+    env: metaSMTConfig="-b cvc4-1.5"
+  - compiler: gcc
+    env: metaSMTConfig="-b cvc4-unstable"
+  - compiler: clang
+    env: metaSMTConfig="-b stp-git -b cryptominisat-git -b minisat-git"
   - compiler: clang
     env: metaSMTConfig="--non-free"
   - compiler: clang
     env: metaSMTConfig="--non-free" BOOST_VERSION=1.60.0
   - compiler: clang
     env: metaSMTConfig="-b aiger-20071012 -b picosat-936 -b cudd-2.4.2"
+  allow_failures:
+  - compiler: gcc
+    env: metaSMTConfig="-b Z3-git"
+  - compiler: clang
+    env: metaSMTConfig="-b cvc4-unstable"
+  - compiler: gcc
+    env: metaSMTConfig="-b stp-git -b cryptominisat-git -b minisat-git"
 
 addons:
   apt:
