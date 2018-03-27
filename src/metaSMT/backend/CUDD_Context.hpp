@@ -7,6 +7,9 @@
 
 namespace metaSMT {
   namespace solver {
+    #ifndef _CPPCUDD
+    typedef std::vector<BDD> BDDvector;
+    #endif
 
     namespace predtags = ::metaSMT::logic::tag;
   
@@ -43,17 +46,27 @@ namespace metaSMT {
         
         void writeDotFile(std::string const & filename) 
         {
-          
+#ifdef _CPPCUDD
           BDDvector bvec (3, &_manager, NULL);
           bvec[0] = _assertions & _assumptions;
           bvec[1] = _assertions;
           bvec[2] = _assumptions;
+#else
+          BDDvector bvec;
+          bvec.push_back(_assertions & _assumptions);
+          bvec.push_back(_assertions);
+          bvec.push_back(_assumptions);
+#endif
           char comple[] = "complete";
           char assert[] = "assertions";
           char assume[] = "assumptions";
           char *names[]={ comple, assert, assume };
           FILE* fp = fopen(filename.c_str(), "w");
+#ifdef _CPPCUDD
           bvec.DumpDot(0, names, fp);
+#else
+          _manager.DumpDot(bvec, 0, names, fp);
+#endif
           fclose(fp);
         }
                 
