@@ -85,3 +85,11 @@ build_windows:
   - ctest
   tags:
   - windows
+
+build_cudd:
+  <<: *ubuntu14
+  variables:
+    METASMT_SOLVERS: "--build cudd-3.0.0"
+    MAX_FAILS: "1"
+  script: *build_default
+
