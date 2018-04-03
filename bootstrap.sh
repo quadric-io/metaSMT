@@ -19,7 +19,7 @@ FREE="
   minisat-git
   aiger-20071012
   picosat-936
-  cudd-2.4.2
+  cudd-3.0.0
 "
 
 NONFREE="

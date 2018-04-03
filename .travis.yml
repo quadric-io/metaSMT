@@ -14,7 +14,7 @@ env:
 - metaSMTConfig="-b stp-2.3.1-basic -b minisat-git"                     # stp 2.3.1 with minisat
 - metaSMTConfig="--non-free"                                            # sword
 - metaSMTConfig="--non-free" BOOST_VERSION=1.60.0                       # sword and boost-1.60.0
-- metaSMTConfig="-b aiger-20071012 -b picosat-936 -b cudd-2.4.2"        # others
+- metaSMTConfig="-b aiger-20071012 -b picosat-936 -b cudd-3.0.0"        # others
 # unstable
 - metaSMTConfig="-b stp-git -b cryptominisat-git -b minisat-git"        # stp upstream with cryptominisat and minisat
 - metaSMTConfig="-b Z3-git"                                             # z3 upstream
@@ -41,7 +41,7 @@ matrix:
   - compiler: clang
     env: metaSMTConfig="--non-free" BOOST_VERSION=1.60.0
   - compiler: clang
-    env: metaSMTConfig="-b aiger-20071012 -b picosat-936 -b cudd-2.4.2"
+    env: metaSMTConfig="-b aiger-20071012 -b picosat-936 -b cudd-3.0.0"
   allow_failures:
   - compiler: gcc
     env: metaSMTConfig="-b Z3-git"
