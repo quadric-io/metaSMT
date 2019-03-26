@@ -181,6 +181,11 @@ else()
   set(GMPXX_LIBRARIES "")
 endif()
 
+if(Boolector_FOUND AND (Boolector_VERSION VERSION_GREATER 2))
+  find_package(Threads)
+  set(Boolector_LIBRARIES ${Boolector_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+endif()
+
 if(Z3_FOUND)
   find_package(OpenMP)
   if (OPENMP_FOUND)
