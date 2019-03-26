@@ -223,6 +223,21 @@ int main(int argc, const char *argv[]) {
     message(WARNING "Disabling Z3 due to linking errors.")
     set( Z3_FOUND 0)
   endif()
+
+  check_CXX_source_compiles("#include <z3++.h>
+int main(int argc, const char *argv[]) {
+  z3::context c;
+  z3::expr e(c);
+  unsigned long long val = 0;
+  Z3_get_numeral_uint64(0, e, &val);
+  return 0;
+}"
+  Z3_ULL_API)
+
+  if( Z3_ULL_API )
+    set(Z3_CXXFLAGS "${Z3_CXXFLAGS} -DmetaSMT_Z3_ULL_API")
+  endif()
+
 endif()
 
 if(CVC4_FOUND)
