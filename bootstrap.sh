@@ -13,9 +13,11 @@ ACADEMIC="
 "
 
 FREE="
-  Z3-4.5.0
-  cvc4-1.5
-  stp-2.3.1-basic
+  boolector-3.0.0
+  yices-2.6.1
+  Z3-4.8.4
+  cvc4-1.6
+  stp-2.3.3-basic
   minisat-git
   aiger-20071012
   picosat-936
