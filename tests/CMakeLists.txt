@@ -83,8 +83,6 @@ endfunction(add_test_executable)
 
 add_test_executable( result_wrapper test_result_wrapper.cpp)
 
-add_test_executable( direct_SWORD direct_SWORD2.cpp REQUIRES SWORD_FOUND )
-
 add_test_executable( direct_CUDD direct_CUDD.cpp REQUIRES CUDD_FOUND )
 add_test_executable( direct_BitBlast_CUDD direct_BitBlast_CUDD.cpp
   REQUIRES CUDD_FOUND)

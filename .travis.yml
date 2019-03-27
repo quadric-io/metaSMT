@@ -11,11 +11,10 @@ env:
 - metaSMTConfig="-b boolector-3.0.0"                                    # boolector-3.0.0
 - metaSMTConfig="-b yices-2.6.1"                                        # yices-2.6.1
 - metaSMTConfig="-b Z3-4.5.0-ubuntu-14.04-x64"                          # z3 4.5.0 pre-built
+- metaSMTConfig="-b Z3-4.5.0-ubuntu-14.04-x64" BOOST_VERSION=1.60.0     # z3 4.5.0 pre-built and boost-1.60.0
 - metaSMTConfig="-b Z3-4.8.4"                                           # z3 4.8.4
 - metaSMTConfig="-b cvc4-1.6"                                           # cvc4 1.6
 - metaSMTConfig="-b stp-2.3.3-basic -b minisat-git"                     # stp 2.3.3 with minisat
-- metaSMTConfig="--non-free"                                            # sword
-- metaSMTConfig="--non-free" BOOST_VERSION=1.60.0                       # sword and boost-1.60.0
 - metaSMTConfig="-b aiger-20071012 -b picosat-936 -b cudd-3.0.0"        # others
 # unstable
 - metaSMTConfig="-b stp-git -b cryptominisat-git -b minisat-git"        # stp upstream with cryptominisat and minisat

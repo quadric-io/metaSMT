@@ -24,10 +24,6 @@ FREE="
   cudd-3.0.0
 "
 
-NONFREE="
-  SWORD-1.1
-"
-
 CMAKE=cmake
 BUILD_CMAKE="no"
 CMAKE_PACKAGE=cmake-3.2.2
@@ -43,9 +39,8 @@ usage() {
 $0 sets up a metaSMT build directory.
 usage: $0 [--free] [--non-free] build
   --help          show this help
-  --academic      include academic license backends (Boolector, Lingeling)
-  --free          include free backends (Aiger, CUDD, CVC4, PicoSat, Z3, ...)
-  --non-free      include non-free backends (SWORD, Lingeling)
+  --academic      include academic license backends
+  --free          include free backends
   --clean         delete build directory before creating a new one
   --deps <dir>    build dependencies in this directory
    -d <dir>       can be shared in different projects

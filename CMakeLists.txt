@@ -57,7 +57,6 @@ include(cmake/config_file.cmake)
 # set all solvers to "on" with good support and experimental or
 # work in progress to "off"
 ###
-option(metaSMT_USE_SWORD      "try to use SWORD solver" on)
 option(metaSMT_USE_Boolector  "try to use Boolector solver" on)
 option(metaSMT_USE_Z3         "try to use Z3 solver" on)
 option(metaSMT_USE_STP        "try to use STP solver" on)
@@ -82,7 +81,6 @@ endif()
 
 if ( WIN32 )
   message(STATUS "Windows build: disable all solvers except z3!" )
-  set(metaSMT_USE_SWORD off)
   set(metaSMT_USE_Boolector  off)
   set(metaSMT_USE_STP off)
   set(metaSMT_USE_CVC4 off)
@@ -94,13 +92,6 @@ if ( WIN32 )
   set(metaSMT_USE_Aiger off)
   set(metaSMT_USE_CW off)
 endif()
-
-if(metaSMT_USE_SWORD AND NOT APPLE)
-  find_package(SWORD QUIET)
-else()
-  set(SWORD_FOUND 0)
-endif()
-set_package_info(SWORD "solver for SMT QF_BV")
 
 if(metaSMT_USE_Boolector)
   find_package(Boolector QUIET)
@@ -274,12 +265,6 @@ endif ()
 
 set(metaSMT_AVAILABLE_QF_ABV_SOLVERS "")
 set(metaSMT_INCLUDES ${Boost_INCLUDE_DIRS})
-
-if(SWORD_FOUND)
-  config_find(SWORD ${SWORD_DIR})
-  list(APPEND metaSMT_LIBS ${SWORD_LIBRARIES})
-  list(APPEND metaSMT_INCLUDES ${SWORD_INCLUDE_DIR})
-endif()
 
 if(Boolector_FOUND)
   config_find(Boolector ${Boolector_DIR})
