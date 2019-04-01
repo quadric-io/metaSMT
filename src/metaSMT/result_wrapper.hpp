@@ -44,7 +44,7 @@ namespace metaSMT {
       result_type operator() ( std::vector<bool> const & vb) const {
         result_type ret (vb.size());
         for (unsigned i = 0; i < vb.size(); ++i) {
-          ret[i] = vb[i];
+          ret[i] = static_cast<bool>(vb[i]);
         }
         return ret;
       }
